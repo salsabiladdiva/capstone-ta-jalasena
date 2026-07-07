@@ -1,0 +1,20 @@
+# ============================================
+# JALASENA Backend - Dependensi Python
+# ============================================
+# Framework utama
+Django>=4.2,<5.0
+djangorestframework>=3.14
+django-cors-headers>=4.3
+
+# WebSocket & Channel Layer
+channels>=4.0
+daphne>=4.0
+
+# Database PostgreSQL (Supabase)
+psycopg2-binary>=2.9
+
+# Environment variables
+python-dotenv>=1.0
+
+# Utilitas
+django-filter>=23.0
