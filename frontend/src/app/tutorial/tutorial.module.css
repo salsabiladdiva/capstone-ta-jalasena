@@ -1,0 +1,251 @@
+/* ================================================
+   JALASENA - Tutorial Page Styles
+   ================================================ */
+
+.tutorialPage {
+  min-height: 100vh;
+  background-color: var(--color-primary);
+  padding-top: 80px;
+  padding-bottom: 60px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 20px 50px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-400);
+  line-height: 1.7;
+}
+
+/* Content container */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === Section === */
+.section {
+  margin-bottom: 48px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--color-gray-800), var(--color-gray-900));
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-xl);
+  animation: fadeInUp 0.6s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sectionIcon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--color-white);
+}
+
+.sectionText {
+  font-size: var(--font-size-md);
+  color: var(--color-gray-300);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+/* === Step-by-step === */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-700);
+  transition: all var(--transition-normal);
+}
+
+.step:hover {
+  border-color: var(--color-accent);
+  background: rgba(255, 71, 29, 0.04);
+  transform: translateX(4px);
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--color-white);
+}
+
+.stepContent h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--color-white);
+}
+
+.stepContent p {
+  font-size: 0.9rem;
+  color: var(--color-gray-400);
+  line-height: 1.7;
+}
+
+.link {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover {
+  color: var(--color-accent-hover);
+}
+
+/* === Feature Grid === */
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.featureItem {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-700);
+  transition: all var(--transition-normal);
+}
+
+.featureItem:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-4px);
+}
+
+.featureIcon {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.featureItem h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--color-white);
+}
+
+.featureItem p {
+  font-size: 0.85rem;
+  color: var(--color-gray-400);
+  line-height: 1.6;
+}
+
+/* === Alert Levels === */
+.alertLevels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.alertLevel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-700);
+}
+
+.alertSafe {
+  background: rgba(76, 175, 80, 0.08);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.alertWarning {
+  background: rgba(255, 152, 0, 0.08);
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+.alertDanger {
+  background: rgba(244, 67, 54, 0.08);
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+.alertDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.alertLevel h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: var(--color-white);
+}
+
+.alertLevel p {
+  font-size: 0.85rem;
+  color: var(--color-gray-400);
+}
+
+/* Back section */
+.backSection {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .step {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

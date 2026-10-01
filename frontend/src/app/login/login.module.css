@@ -1,0 +1,320 @@
+/* ================================================
+   JALASENA - Login Page Styles V2
+   ================================================
+   Diperbarui: Background lebih terang dengan 
+   gambar laut dan gelombang yang terlihat jelas
+   ================================================ */
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 20px;
+  /* Background lebih terang - menampilkan warna laut */
+  background: linear-gradient(
+    135deg,
+    #0d3b66 0%,
+    #1a5276 25%,
+    #1a6e7a 50%,
+    #2980b9 75%,
+    #1a5276 100%
+  );
+  background-size: 400% 400%;
+  animation: oceanGradient 15s ease infinite;
+}
+
+@keyframes oceanGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === Background Wave Animation === */
+/* Gelombang laut yang terlihat jelas */
+.waveBackground {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.wave, .wave2, .wave3 {
+  position: absolute;
+  left: -50%;
+  width: 200%;
+  border-radius: 43%;
+}
+
+/* Gelombang 1 - besar, terang */
+.wave {
+  bottom: -5%;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.08);
+  animation: waveAnim 7s ease-in-out infinite;
+}
+
+/* Gelombang 2 - medium */
+.wave2 {
+  bottom: -8%;
+  height: 350px;
+  background: rgba(41, 128, 185, 0.15);
+  animation: waveAnim 9s ease-in-out infinite reverse;
+}
+
+/* Gelombang 3 - kecil, aksen */
+.wave3 {
+  bottom: -12%;
+  height: 400px;
+  background: rgba(26, 110, 122, 0.12);
+  animation: waveAnim 11s ease-in-out infinite;
+}
+
+@keyframes waveAnim {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(1deg) translateY(-15px); }
+  50% { transform: rotate(3deg) translateY(-25px); }
+  75% { transform: rotate(1.5deg) translateY(-10px); }
+}
+
+/* Partikel cahaya di air */
+.loginPage::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: floatLight 8s ease-in-out infinite;
+}
+
+.loginPage::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  right: 15%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 71, 29, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: floatLight 10s ease-in-out infinite reverse;
+}
+
+@keyframes floatLight {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -30px) scale(1.2); }
+}
+
+/* === Login Card === */
+.loginCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  /* Card semi-transparent agar background laut terlihat */
+  background: rgba(33, 33, 33, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  padding: 48px 36px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loginCardSuccess {
+  border-color: var(--color-success);
+  box-shadow: 0 0 40px rgba(76, 175, 80, 0.3);
+}
+
+/* Header */
+.loginHeader {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.loginIcon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.loginTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.loginSubtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+/* Form */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.5px;
+}
+
+.input {
+  padding: 14px 16px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(255, 71, 29, 0.2);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.input::placeholder {
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.95rem;
+}
+
+.input:disabled {
+  opacity: 0.6;
+}
+
+/* Error */
+.errorMessage {
+  padding: 12px;
+  background: rgba(244, 67, 54, 0.12);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: var(--radius-md);
+  color: #ef5350;
+  font-size: 0.85rem;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* Login button */
+.loginBtn {
+  width: 100%;
+  padding: 16px !important;
+  font-size: 1.1rem !important;
+  margin-top: 4px;
+}
+
+/* Spinner */
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Footer */
+.loginFooter {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.loginFooter p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.tutorialLink {
+  color: var(--color-accent);
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.tutorialLink:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+/* Demo info */
+.demoInfo {
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(255, 71, 29, 0.06);
+  border: 1px solid rgba(255, 71, 29, 0.15);
+  border-radius: var(--radius-md);
+}
+
+.demoTitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 8px;
+}
+
+.demoCodes {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.demoCode {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-accent);
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all var(--transition-fast);
+  border: 1px solid rgba(255, 71, 29, 0.2);
+}
+
+.demoCode:hover {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}

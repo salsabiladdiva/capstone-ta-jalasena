@@ -1,0 +1,204 @@
+/* ================================================
+   JALASENA - Navbar Styles V4 (Elegant Dropdown)
+   ================================================
+   - Minimal, refined design
+   - SVG icons instead of emoji
+   - Subtle, professional animations
+   - Glassmorphism dropdown
+   ================================================ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-navbar);
+  padding: 16px 0;
+  transition: all var(--transition-normal);
+  background-color: transparent;
+}
+
+.navbarScrolled {
+  background-color: rgba(33, 33, 33, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 10px 0;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.navbarInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* === Logo === */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  z-index: 10;
+  transition: opacity var(--transition-fast);
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.logoImage {
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.logoText {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--color-white);
+}
+
+/* === Menu Button (2-line minimal) === */
+.menuWrapper {
+  position: relative;
+}
+
+.menuButton {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.menuButton:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.menuButtonOpen {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Minimal 2-line icon */
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 16px;
+}
+
+.menuLine {
+  width: 100%;
+  height: 1.5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* X animation when open */
+.menuButtonOpen .menuLine:nth-child(1) {
+  transform: rotate(45deg) translate(2.3px, 2.3px);
+}
+
+.menuButtonOpen .menuLine:nth-child(2) {
+  transform: rotate(-45deg) translate(2.3px, -2.3px);
+}
+
+/* === Dropdown Menu (Elegant) === */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 200px;
+  background: rgba(20, 20, 22, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  z-index: 100;
+
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.dropdownOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.dropdownItem:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.dropdownSvg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.dropdownItem:hover .dropdownSvg {
+  opacity: 0.85;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 2px 12px;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .navbarInner {
+    padding: 0 16px;
+  }
+
+  .logoText {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+}

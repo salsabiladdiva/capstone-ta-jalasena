@@ -1,0 +1,356 @@
+/* ================================================
+   JALASENA - Halaman Deteksi Styles
+   ================================================ */
+
+.deteksiPage {
+  min-height: 100vh;
+  background-color: var(--color-primary);
+  padding-top: 70px;
+}
+
+/* === Filter Bar === */
+.filterBar {
+  background: linear-gradient(135deg, var(--color-gray-900), var(--color-gray-800));
+  border-bottom: 1px solid var(--color-gray-700);
+  padding: 20px 0;
+  position: sticky;
+  top: 64px;
+  z-index: 100;
+}
+
+.filterContent {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.pageTitleIcon {
+  font-size: 1.5rem;
+}
+
+.filterControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+/* Dropdown pilih ikan */
+.fishSelect {
+  padding: 12px 16px;
+  background-color: var(--color-gray-700);
+  color: var(--color-white);
+  border: 1px solid var(--color-gray-600);
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-width: 220px;
+  transition: border-color var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.fishSelect:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+/* Tombol search */
+.searchBtn {
+  white-space: nowrap;
+  padding: 12px 24px !important;
+}
+
+.searchBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Spinner loading */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Hasil pencarian */
+.resultInfo {
+  font-size: 0.9rem;
+  color: var(--color-gray-300);
+  white-space: nowrap;
+}
+
+/* === Map Container === */
+.mapContainer {
+  display: flex;
+  height: calc(100vh - 180px);
+  position: relative;
+}
+
+.mapWrapper {
+  flex: 1;
+  position: relative;
+}
+
+/* Loading state peta */
+.mapLoading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-ocean-deep);
+  color: var(--color-gray-400);
+  gap: 16px;
+}
+
+.mapLoadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-gray-700);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* === Info Panel (sidebar) === */
+.infoPanel {
+  width: 340px;
+  background: linear-gradient(180deg, var(--color-gray-900), var(--color-gray-800));
+  border-left: 1px solid var(--color-gray-700);
+  padding: 24px;
+  overflow-y: auto;
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.infoPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-gray-700);
+}
+
+.infoPanelHeader h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.closeBtn {
+  background: var(--color-gray-700);
+  color: var(--color-gray-300);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Detail info */
+.infoDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.infoLabel {
+  font-size: 0.85rem;
+  color: var(--color-gray-400);
+}
+
+.infoValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.infoDescription {
+  font-size: 0.85rem;
+  color: var(--color-gray-400);
+  line-height: 1.6;
+  margin-top: 8px;
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-accent);
+}
+
+/* Tombol navigasi */
+.navigateBtn {
+  width: 100%;
+  padding: 14px !important;
+  font-size: 1rem !important;
+}
+
+/* Info navigasi aktif */
+.navInfo {
+  background: rgba(255, 71, 29, 0.08);
+  border: 1px solid rgba(255, 71, 29, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+/* GPS indicator */
+.gpsIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--color-success);
+}
+
+.gpsDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-success);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* === Popup Sampai === */
+.arrivalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.arrivalPopup {
+  background: linear-gradient(135deg, var(--color-gray-800), var(--color-gray-900));
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  text-align: center;
+  max-width: 400px;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.arrivalIcon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  animation: bounce 0.6s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+.arrivalPopup h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--color-accent);
+}
+
+.arrivalPopup p {
+  color: var(--color-gray-300);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filterContent {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterControls {
+    flex-direction: column;
+  }
+
+  .fishSelect {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .mapContainer {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .mapWrapper {
+    height: 50vh;
+  }
+
+  .infoPanel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-gray-700);
+  }
+}

@@ -1,0 +1,210 @@
+/* ================================================
+   JALASENA - Danger Alert Styles (CSS Module)
+   ================================================ */
+
+.alertOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.alertOverlay.alertDanger {
+  animation: dangerPulse 1s ease-in-out infinite;
+}
+
+@keyframes dangerPulse {
+  0%, 100% { background: rgba(0, 0, 0, 0.7); }
+  50% { background: rgba(244, 67, 54, 0.2); }
+}
+
+.alertModal {
+  position: relative;
+  background: linear-gradient(135deg, var(--color-gray-800), var(--color-gray-900));
+  border: 2px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+.alertModal.modalDanger {
+  border-color: var(--color-danger);
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), shake 0.5s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: var(--color-white);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 71, 29, 0.3);
+  border-color: var(--color-accent);
+}
+
+.alertIcon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.alertModal.modalDanger .alertIcon {
+  animation: bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.alertTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 900;
+  color: var(--color-white);
+  margin: 0 0 16px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.alertModal.modalDanger .alertTitle {
+  color: var(--color-danger);
+  text-shadow: 0 0 20px rgba(244, 67, 54, 0.5);
+}
+
+.alertMessage {
+  font-size: var(--font-size-lg);
+  color: var(--color-white);
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+}
+
+.alertMessage strong {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.alertModal.modalDanger .alertMessage strong {
+  color: var(--color-danger);
+}
+
+.alertSubtext {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-direction: column;
+}
+
+.callBtn,
+.dismissBtn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--font-primary);
+}
+
+.callBtn {
+  background: var(--color-danger);
+  color: white;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+}
+
+.callBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(244, 67, 54, 0.6);
+}
+
+.callBtn:active {
+  transform: translateY(0);
+}
+
+.dismissBtn {
+  background: transparent;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+}
+
+.dismissBtn:hover {
+  background: var(--color-accent);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.dismissBtn:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .alertModal {
+    padding: 30px 24px;
+    max-width: 90vw;
+  }
+
+  .alertIcon {
+    font-size: 48px;
+  }
+
+  .alertTitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .alertMessage {
+    font-size: var(--font-size-md);
+  }
+}

@@ -1,0 +1,89 @@
+/* ================================================
+   JALASENA - Monitoring Chart Styles (CSS Module)
+   ================================================ */
+
+.chartWrapper {
+  background: linear-gradient(135deg, var(--color-gray-800), var(--color-gray-900));
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  flex: 1;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: var(--color-gray-500);
+  font-size: var(--font-size-lg);
+}
+
+.chartHeader {
+  margin-bottom: 20px;
+}
+
+.chartTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 8px;
+}
+
+.chartSubtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+}
+
+/* Chart Stats */
+.chartStats {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-gray-700);
+  flex-wrap: wrap;
+}
+
+.statItem {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statValue {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.statWarning {
+  color: var(--color-warning);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .chartWrapper {
+    min-height: 350px;
+  }
+
+  .chartStats {
+    flex-direction: column;
+  }
+
+  .statItem {
+    min-width: auto;
+  }
+}
