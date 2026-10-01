@@ -46,7 +46,7 @@ Format pesan keluar (ke klien):
 
 import json
 import logging
-from channels.generic.websocket import AsyncWebSocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from ships.models import Ship
 from .models import ShipTelemetry, Alert
@@ -56,7 +56,7 @@ from .ai_model import analyze_tilt, calculate_safety_score
 logger = logging.getLogger(__name__)
 
 
-class MonitoringConsumer(AsyncWebSocketConsumer):
+class MonitoringConsumer(AsyncWebsocketConsumer):
     """
     Consumer WebSocket untuk pemantauan kapal real-time.
 
