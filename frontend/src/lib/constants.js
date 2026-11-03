@@ -213,8 +213,8 @@ export const DUMMY_FISH_ZONES = [
   {
     id: 16,
     fish_type: 'tongkol',
-    latitude: -6.45,
-    longitude: 110.88,
+    latitude: -6.30,
+    longitude: 110.90,
     potential_score: 73,
     sst: 27.5,
     chlorophyll: 1.6,
