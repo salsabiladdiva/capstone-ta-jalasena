@@ -189,16 +189,13 @@ export default function FishMap({
       style={{ width: '100%', height: '100%', minHeight: '300px' }}
       zoomControl={true}
     >
-      {/* Tile layer sesuai mapMode */}
-      {/* Gunakan CartoDB dark tiles yang lebih reliable di mobile */}
+      {/* Tile layer - OpenStreetMap untuk kedua mode */}
+      {/* Dark mode: gunakan OSM tiles + CSS filter invert */}
       <TileLayer
-        url={mapMode === 'dark'
-          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-          : MAP_CONFIG.lightTileUrl}
-        attribution={mapMode === 'dark'
-          ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
-          : MAP_CONFIG.lightAttribution}
+        url={MAP_CONFIG.lightTileUrl}
+        attribution={MAP_CONFIG.lightAttribution}
         maxZoom={19}
+        className={mapMode === 'dark' ? 'dark-tiles' : ''}
       />
 
       {/* Controller untuk auto-pan/zoom */}
