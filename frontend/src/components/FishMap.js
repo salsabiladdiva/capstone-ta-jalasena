@@ -181,6 +181,7 @@ export default function FishMap({
   }, [isNavigating, selectedZone, userPosition]);
 
   return (
+    <div style={{ width: '100%', height: '100%' }} className={mapMode === 'dark' ? 'map-dark-mode' : ''}>
     <MapContainer
       center={MAP_CONFIG.center}
       zoom={MAP_CONFIG.zoom}
@@ -190,12 +191,11 @@ export default function FishMap({
       zoomControl={true}
     >
       {/* Tile layer - OpenStreetMap untuk kedua mode */}
-      {/* Dark mode: gunakan OSM tiles + CSS filter invert */}
+      {/* Dark mode: CSS filter diterapkan via wrapper .map-dark-mode */}
       <TileLayer
         url={MAP_CONFIG.lightTileUrl}
         attribution={MAP_CONFIG.lightAttribution}
         maxZoom={19}
-        className={mapMode === 'dark' ? 'dark-tiles' : ''}
       />
 
       {/* Controller untuk auto-pan/zoom */}
@@ -281,5 +281,6 @@ export default function FishMap({
         />
       )}
     </MapContainer>
+    </div>
   );
 }

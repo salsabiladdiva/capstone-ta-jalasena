@@ -346,8 +346,18 @@ img {
 
 /* Dark mode tiles: CSS filter pada OpenStreetMap tiles */
 /* Ini menghindari kebutuhan API key dari tile provider berbayar */
-.dark-tiles {
+/* Dark mode: filter diterapkan pada tile-pane via wrapper class */
+.map-dark-mode .leaflet-tile-pane {
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Pastikan marker/popup tidak ikut ter-invert */
+.map-dark-mode .leaflet-marker-pane,
+.map-dark-mode .leaflet-popup-pane,
+.map-dark-mode .leaflet-overlay-pane,
+.map-dark-mode .leaflet-shadow-pane,
+.map-dark-mode .leaflet-control-container {
+  filter: none;
 }
 
 /* Fix Leaflet panes agar tiles ter-render dengan benar di mobile */
