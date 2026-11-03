@@ -14,7 +14,7 @@
 
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -186,20 +186,20 @@ export default function FishMap({
       zoom={MAP_CONFIG.zoom}
       minZoom={MAP_CONFIG.minZoom}
       maxZoom={MAP_CONFIG.maxZoom}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', minHeight: '300px' }}
       zoomControl={true}
     >
       {/* Tile layer sesuai mapMode */}
+      {/* Gunakan CartoDB dark tiles yang lebih reliable di mobile */}
       <TileLayer
-        url={mapMode === 'dark' ? MAP_CONFIG.darkTileUrl : MAP_CONFIG.lightTileUrl}
-        attribution={mapMode === 'dark' ? MAP_CONFIG.darkAttribution : MAP_CONFIG.lightAttribution}
+        url={mapMode === 'dark'
+          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+          : MAP_CONFIG.lightTileUrl}
+        attribution={mapMode === 'dark'
+          ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+          : MAP_CONFIG.lightAttribution}
+        maxZoom={19}
       />
-      {/* Label layer untuk dark mode agar tulisan nama daerah tetap muncul */}
-      {mapMode === 'dark' && (
-        <TileLayer
-          url={MAP_CONFIG.darkReferenceUrl}
-        />
-      )}
 
       {/* Controller untuk auto-pan/zoom */}
       <MapController fishZones={fishZones} selectedZone={selectedZone} />

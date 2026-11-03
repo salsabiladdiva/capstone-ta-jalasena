@@ -338,6 +338,24 @@ img {
 .leaflet-container {
   background-color: var(--color-ocean-deep) !important;
   font-family: var(--font-primary) !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 300px;
+  z-index: 1;
+}
+
+/* Fix Leaflet panes agar tiles ter-render dengan benar di mobile */
+.leaflet-pane {
+  z-index: 1;
+}
+
+.leaflet-tile-pane {
+  z-index: 1;
+}
+
+.leaflet-tile {
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .leaflet-popup-content-wrapper {
