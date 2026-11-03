@@ -113,6 +113,33 @@ const userIcon = L.divIcon({
 function MapController({ fishZones, selectedZone }) {
   const map = useMap();
 
+  // Fix: invalidateSize saat pertama kali load dan saat resize
+  // Ini mengatasi bug Leaflet di mobile dimana peta tidak ter-render
+  // karena container belum memiliki dimensi yang benar saat inisialisasi
+  useEffect(() => {
+    // Delay invalidateSize untuk memastikan container sudah ter-render
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+
+    // Juga invalidateSize setelah delay lebih lama (untuk transisi CSS)
+    const timer2 = setTimeout(() => {
+      map.invalidateSize();
+    }, 500);
+
+    // Listen untuk resize event
+    const handleResize = () => {
+      map.invalidateSize();
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timer2);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [map]);
+
   useEffect(() => {
     if (selectedZone) {
       // Zoom ke zona yang dipilih

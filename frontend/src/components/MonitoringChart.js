@@ -89,7 +89,7 @@ export default function MonitoringChart({
 }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
+      <ComposedChart data={data} margin={{ top: 10, right: 65, left: 0, bottom: 10 }}>
         {/* Grid background */}
         <CartesianGrid
           strokeDasharray="3 3"

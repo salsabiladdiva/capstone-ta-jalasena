@@ -11,7 +11,7 @@
 
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
@@ -52,24 +52,77 @@ export default function DeteksiPage() {
   const [navSpeed, setNavSpeed] = useState(null);
   // State mode peta (gelap/terang)
   const [mapMode, setMapMode] = useState('dark');
+  // State GPS permission
+  const [gpsStatus, setGpsStatus] = useState('checking'); // 'checking' | 'granted' | 'denied' | 'prompt' | 'unavailable'
+  // Ref for map wrapper to force resize
+  const mapWrapperRef = useRef(null);
 
-  // --- Ambil posisi GPS pengguna ---
+  // --- Cek permission GPS dan ambil posisi pengguna ---
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserPosition({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          });
-        },
-        (err) => {
-          console.warn('GPS tidak tersedia, menggunakan posisi default Semarang');
-          // Fallback ke posisi Semarang jika GPS tidak tersedia
-          setUserPosition({ lat: -6.9667, lng: 110.4196 });
-        }
-      );
+    if (!navigator.geolocation) {
+      setGpsStatus('unavailable');
+      setUserPosition({ lat: -6.9667, lng: 110.4196 });
+      return;
     }
+
+    // Cek permission status (jika browser mendukung Permissions API)
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+        if (result.state === 'granted') {
+          setGpsStatus('granted');
+        } else if (result.state === 'denied') {
+          setGpsStatus('denied');
+          setUserPosition({ lat: -6.9667, lng: 110.4196 });
+          return;
+        } else {
+          // 'prompt' - user belum memutuskan
+          setGpsStatus('prompt');
+        }
+
+        // Listen for permission changes
+        result.onchange = () => {
+          if (result.state === 'granted') {
+            setGpsStatus('granted');
+            requestGpsPosition();
+          } else if (result.state === 'denied') {
+            setGpsStatus('denied');
+          }
+        };
+      }).catch(() => {
+        // Permissions API tidak didukung, langsung coba
+        setGpsStatus('prompt');
+      });
+    } else {
+      setGpsStatus('prompt');
+    }
+
+    requestGpsPosition();
+  }, []);
+
+  // Fungsi untuk meminta posisi GPS
+  const requestGpsPosition = useCallback(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setGpsStatus('granted');
+        setUserPosition({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+      },
+      (err) => {
+        console.warn('GPS tidak tersedia, menggunakan posisi default Semarang');
+        if (err.code === 1) {
+          // Permission denied
+          setGpsStatus('denied');
+        } else {
+          setGpsStatus('unavailable');
+        }
+        // Fallback ke posisi Semarang jika GPS tidak tersedia
+        setUserPosition({ lat: -6.9667, lng: 110.4196 });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+    );
   }, []);
 
   // --- Handler pencarian zona ikan ---
@@ -221,10 +274,45 @@ export default function DeteksiPage() {
           </div>
         </div>
 
+        {/* === GPS PERMISSION BANNER === */}
+        {(gpsStatus === 'prompt' || gpsStatus === 'denied' || gpsStatus === 'unavailable') && (
+          <div className={styles.gpsBanner}>
+            <div className={styles.gpsBannerContent}>
+              <span className={styles.gpsBannerIcon}>
+                {gpsStatus === 'denied' ? '🚫' : '📍'}
+              </span>
+              <div className={styles.gpsBannerText}>
+                <strong>
+                  {gpsStatus === 'denied'
+                    ? 'Akses Lokasi Ditolak'
+                    : gpsStatus === 'unavailable'
+                    ? 'GPS Tidak Tersedia'
+                    : 'Aktifkan GPS untuk Akurasi Lokasi'}
+                </strong>
+                <span>
+                  {gpsStatus === 'denied'
+                    ? 'Buka pengaturan browser dan izinkan akses lokasi untuk hasil yang lebih akurat.'
+                    : gpsStatus === 'unavailable'
+                    ? 'Perangkat Anda tidak mendukung GPS. Menggunakan lokasi default.'
+                    : 'Izinkan akses lokasi untuk menampilkan posisi Anda di peta dan menghitung jarak.'}
+                </span>
+              </div>
+              {gpsStatus === 'prompt' && (
+                <button
+                  className={styles.gpsBannerBtn}
+                  onClick={requestGpsPosition}
+                >
+                  Izinkan GPS
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* === AREA PETA + PANEL NAVIGASI === */}
         <div className={styles.mapContainer}>
           {/* Peta interaktif Leaflet */}
-          <div className={styles.mapWrapper}>
+          <div className={styles.mapWrapper} ref={mapWrapperRef}>
             <FishMap
               fishZones={fishZones}
               userPosition={userPosition}
