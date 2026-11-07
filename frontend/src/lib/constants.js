@@ -295,14 +295,21 @@ export const DUMMY_SHIPS = [
 ];
 
 // --- Threshold Kemiringan Kapal ---
-// Digunakan oleh AI model untuk mendeteksi kondisi bahaya
-// Data kemiringan didapat dari sensor accelerometer/gyroscope di kapal
-// lalu dikirim ke model AI untuk analisis pola gelombang
+// Aturan sesuai pelabelan dataset model:
+// BAHAYA jika |roll| >= 20° ATAU |pitch| >= 15°
+// Data roll & pitch didapat dari sensor accelerometer/gyroscope di kapal
 export const TILT_THRESHOLDS = {
-  safe: 15,        // < 15° = aman (hijau)
-  warning: 15,     // 15-30° = peringatan (kuning)
-  danger: 30,      // > 30° = bahaya, kapal bisa terbalik (merah)
+  roll: 20,   // |roll| >= 20° = bahaya
+  pitch: 15,  // |pitch| >= 15° = bahaya
 };
+
+// Mengembalikan true jika kapal dalam kondisi bahaya
+export function isTiltDanger(roll, pitch) {
+  return (
+    Math.abs(roll) >= TILT_THRESHOLDS.roll ||
+    Math.abs(pitch) >= TILT_THRESHOLDS.pitch
+  );
+}
 
 // --- Konfigurasi Navigasi ---
 export const NAV_CONFIG = {

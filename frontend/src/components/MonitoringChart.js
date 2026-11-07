@@ -1,56 +1,39 @@
 /* ================================================
    JALASENA - Monitoring Chart Component
    ================================================
-   Komponen grafik real-time untuk menampilkan data
-   kemiringan kapal. Menggunakan Recharts library.
-   
-   Sumbu X: Waktu (timestamp)
-   Sumbu Y: Derajat kemiringan kapal
-   
-   Fitur:
-   - Garis threshold peringatan (15°) dan bahaya (30°)
-   - Auto-scroll ke data terbaru
-   - Animasi transisi smooth saat data baru masuk
-   - Area fill di bawah garis untuk visualisasi
-   
-   Data kemiringan kapal didapat dari sensor
-   accelerometer/gyroscope yang terpasang di kapal,
-   dikirim via IoT ke backend, lalu di-broadcast
-   via WebSocket ke dashboard ini.
+   Grafik real-time kemiringan kapal (Roll & Pitch).
+   Menggunakan Recharts.
+
+   Sumbu X: Waktu
+   Sumbu Y: Derajat kemiringan (nilai absolut)
+
+   Garis batas:
+   - Roll  : 20°
+   - Pitch : 15°
+   Bahaya jika |roll| >= 20° ATAU |pitch| >= 15°
    ================================================ */
 
 'use client';
 
 import {
   ResponsiveContainer,
-  LineChart,
   Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ReferenceLine,
-  Area,
   ComposedChart,
 } from 'recharts';
 
 /**
- * Custom Tooltip Component
- * Menampilkan info detail saat hover di grafik
+ * Custom Tooltip - info detail saat hover di grafik
  */
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload, label, rollThreshold, pitchThreshold }) {
   if (active && payload && payload.length) {
-    const tilt = payload[0].value;
-    let statusColor = '#4caf50';
-    let statusText = 'Aman';
-
-    if (tilt >= 30) {
-      statusColor = '#f44336';
-      statusText = 'BAHAYA';
-    } else if (tilt >= 15) {
-      statusColor = '#ff9800';
-      statusText = 'Waspada';
-    }
+    const p = payload[0].payload;
+    const isDanger =
+      Math.abs(p.roll) >= rollThreshold || Math.abs(p.pitch) >= pitchThreshold;
 
     return (
       <div style={{
@@ -63,11 +46,19 @@ function CustomTooltip({ active, payload, label }) {
         boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
       }}>
         <p style={{ color: '#9e9e9e', marginBottom: '6px' }}>⏰ {label}</p>
-        <p style={{ color: '#FF471D', fontWeight: 700, fontSize: '1.1rem' }}>
-          {tilt?.toFixed(1)}°
+        <p style={{ color: '#FF471D', fontWeight: 700 }}>
+          Roll: {Number(p.roll).toFixed(1)}°
         </p>
-        <p style={{ color: statusColor, fontWeight: 600, fontSize: '0.8rem', marginTop: '4px' }}>
-          Status: {statusText}
+        <p style={{ color: '#29b6f6', fontWeight: 700 }}>
+          Pitch: {Number(p.pitch).toFixed(1)}°
+        </p>
+        <p style={{
+          color: isDanger ? '#f44336' : '#4caf50',
+          fontWeight: 600,
+          fontSize: '0.8rem',
+          marginTop: '4px',
+        }}>
+          Status: {isDanger ? 'BAHAYA' : 'Aman'}
         </p>
       </div>
     );
@@ -76,21 +67,20 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 /**
- * MonitoringChart - Grafik Kemiringan Kapal Real-time
- * 
- * @param {Array} data - Array data telemetry [{time, tilt_degree, ...}]
- * @param {number} warningThreshold - Batas peringatan dalam derajat (15°)
- * @param {number} dangerThreshold - Batas bahaya dalam derajat (30°)
+ * MonitoringChart - Grafik Roll & Pitch Kapal Real-time
+ *
+ * @param {Array}  data           - [{time, roll, pitch, roll_abs, pitch_abs, ...}]
+ * @param {number} rollThreshold  - Batas bahaya roll (20°)
+ * @param {number} pitchThreshold - Batas bahaya pitch (15°)
  */
 export default function MonitoringChart({
   data = [],
-  warningThreshold = 15,
-  dangerThreshold = 30,
+  rollThreshold = 20,
+  pitchThreshold = 15,
 }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={data} margin={{ top: 10, right: 65, left: 0, bottom: 10 }}>
-        {/* Grid background */}
         <CartesianGrid
           strokeDasharray="3 3"
           stroke="rgba(255,255,255,0.06)"
@@ -107,14 +97,13 @@ export default function MonitoringChart({
           interval="preserveStartEnd"
         />
 
-        {/* Sumbu Y - Derajat Kemiringan */}
+        {/* Sumbu Y - Derajat */}
         <YAxis
           stroke="#616161"
           tick={{ fill: '#757575', fontSize: 11 }}
           tickLine={false}
           axisLine={{ stroke: '#424242' }}
-          domain={[0, 45]}
-          ticks={[0, 5, 10, 15, 20, 25, 30, 35, 40, 45]}
+          domain={[0, (dataMax) => Math.max(40, Math.ceil(dataMax / 10) * 10)]}
           label={{
             value: 'Derajat (°)',
             angle: -90,
@@ -123,70 +112,52 @@ export default function MonitoringChart({
           }}
         />
 
-        {/* Tooltip custom */}
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          content={
+            <CustomTooltip
+              rollThreshold={rollThreshold}
+              pitchThreshold={pitchThreshold}
+            />
+          }
+        />
 
-        {/* --- Garis threshold PERINGATAN (15°) --- */}
-        {/* Garis putus-putus kuning menandakan batas peringatan */}
+        {/* Garis batas PITCH (15°) */}
         <ReferenceLine
-          y={warningThreshold}
+          y={pitchThreshold}
           stroke="#ff9800"
           strokeDasharray="8 4"
           strokeWidth={1.5}
-          label={{
-            value: 'Peringatan',
-            position: 'right',
-            fill: '#ff9800',
-            fontSize: 10,
-          }}
+          label={{ value: 'Pitch', position: 'right', fill: '#ff9800', fontSize: 10 }}
         />
 
-        {/* --- Garis threshold BAHAYA (30°) --- */}
-        {/* Garis putus-putus merah menandakan batas bahaya */}
+        {/* Garis batas ROLL (20°) */}
         <ReferenceLine
-          y={dangerThreshold}
+          y={rollThreshold}
           stroke="#f44336"
           strokeDasharray="8 4"
           strokeWidth={1.5}
-          label={{
-            value: 'Bahaya',
-            position: 'right',
-            fill: '#f44336',
-            fontSize: 10,
-          }}
+          label={{ value: 'Roll', position: 'right', fill: '#f44336', fontSize: 10 }}
         />
 
-        {/* --- Area fill di bawah garis --- */}
-        {/* Memberikan efek visual area di bawah garis kemiringan */}
-        <defs>
-          <linearGradient id="tiltGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#FF471D" stopOpacity={0.3}/>
-            <stop offset="95%" stopColor="#FF471D" stopOpacity={0}/>
-          </linearGradient>
-        </defs>
-        <Area
-          type="monotone"
-          dataKey="tilt_degree"
-          stroke="none"
-          fill="url(#tiltGradient)"
-          fillOpacity={1}
-          isAnimationActive={false}
-        />
-
-        {/* --- Garis utama kemiringan kapal --- */}
-        {/* Animasi smooth saat data baru masuk */}
+        {/* Garis Roll */}
         <Line
           type="monotone"
-          dataKey="tilt_degree"
+          dataKey="roll_abs"
           stroke="#FF471D"
           strokeWidth={2.5}
           dot={false}
-          activeDot={{
-            r: 6,
-            fill: '#FF471D',
-            stroke: '#fff',
-            strokeWidth: 2,
-          }}
+          activeDot={{ r: 6, fill: '#FF471D', stroke: '#fff', strokeWidth: 2 }}
+          isAnimationActive={false}
+        />
+
+        {/* Garis Pitch */}
+        <Line
+          type="monotone"
+          dataKey="pitch_abs"
+          stroke="#29b6f6"
+          strokeWidth={2.5}
+          dot={false}
+          activeDot={{ r: 6, fill: '#29b6f6', stroke: '#fff', strokeWidth: 2 }}
           isAnimationActive={false}
         />
       </ComposedChart>

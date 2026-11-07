@@ -124,23 +124,12 @@ export default function MonitoringPage() {
       });
 
       // --- Deteksi kondisi bahaya ---
-      // Cek apakah kemiringan kapal melewati threshold
-      // Data kemiringan didapat dari sensor accelerometer/gyroscope
-      // lalu dianalisis oleh model AI di backend
-      if (data.tilt_degree >= TILT_THRESHOLDS.danger) {
-        // BAHAYA: kemiringan > 30° - kapal berisiko terbalik
+      // Aturan sesuai dataset model: BAHAYA jika |roll| >= 20° ATAU |pitch| >= 15°
+      if (data.is_danger) {
         setDangerAlert({
           type: 'danger',
           tilt: data.tilt_degree,
-          message: `BAHAYA! Kemiringan kapal ${data.tilt_degree.toFixed(1)}° - Risiko terbalik!`,
-        });
-        setShowAlert(true);
-      } else if (data.tilt_degree >= TILT_THRESHOLDS.warning) {
-        // PERINGATAN: kemiringan 15-30°
-        setDangerAlert({
-          type: 'warning',
-          tilt: data.tilt_degree,
-          message: `Peringatan! Kemiringan kapal ${data.tilt_degree.toFixed(1)}° - Waspadai gelombang!`,
+          message: `BAHAYA! Roll ${data.roll.toFixed(1)}° / Pitch ${data.pitch.toFixed(1)}° - Risiko terbalik!`,
         });
         setShowAlert(true);
       }
@@ -180,13 +169,7 @@ export default function MonitoringPage() {
   // --- Tentukan status keselamatan berdasarkan kemiringan ---
   const getSafetyStatus = useCallback(() => {
     if (!currentTelemetry) return { status: 'unknown', color: '#757575', text: 'Memuat...' };
-    const tilt = currentTelemetry.tilt_degree;
-    if (tilt >= TILT_THRESHOLDS.danger) {
-      return { status: 'danger', color: '#f44336', text: 'BAHAYA' };
-    }
-    if (tilt >= TILT_THRESHOLDS.warning) {
-      return { status: 'warning', color: '#ff9800', text: 'WASPADA' };
-    }
+    if (currentTelemetry.is_danger) return { status: 'danger', color: '#f44336', text: 'BAHAYA' };
     return { status: 'safe', color: '#4caf50', text: 'AMAN' };
   }, [currentTelemetry]);
 
@@ -277,34 +260,33 @@ export default function MonitoringPage() {
                 <h3>Kemiringan Kapal</h3>
               </div>
               <div className={styles.cardContent}>
-                <div className={styles.tiltDisplay}>
-                  <span className={styles.tiltValue} style={{ color: safety.color }}>
-                    {currentTelemetry ? currentTelemetry.tilt_degree.toFixed(1) : '—'}
+                <div className={styles.positionRow}>
+                  <span className={styles.posLabel}>Roll (batas 20°)</span>
+                  <span
+                    className={styles.posValue}
+                    style={{
+                      color:
+                        currentTelemetry && Math.abs(currentTelemetry.roll) >= TILT_THRESHOLDS.roll
+                          ? '#f44336'
+                          : undefined,
+                    }}
+                  >
+                    {currentTelemetry ? currentTelemetry.roll.toFixed(1) + '°' : '—'}
                   </span>
-                  <span className={styles.tiltUnit}>°</span>
                 </div>
-                {/* Indikator visual kemiringan */}
-                <div className={styles.tiltBar}>
-                  <div className={styles.tiltBarTrack}>
-                    <div
-                      className={styles.tiltBarFill}
-                      style={{
-                        width: currentTelemetry
-                          ? `${Math.min((currentTelemetry.tilt_degree / 45) * 100, 100)}%`
-                          : '0%',
-                        backgroundColor: safety.color,
-                      }}
-                    ></div>
-                    {/* Marker threshold */}
-                    <div className={styles.tiltThreshold15} title="Batas peringatan (15°)"></div>
-                    <div className={styles.tiltThreshold30} title="Batas bahaya (30°)"></div>
-                  </div>
-                  <div className={styles.tiltLabels}>
-                    <span>0°</span>
-                    <span>15°</span>
-                    <span>30°</span>
-                    <span>45°</span>
-                  </div>
+                <div className={styles.positionRow}>
+                  <span className={styles.posLabel}>Pitch (batas 15°)</span>
+                  <span
+                    className={styles.posValue}
+                    style={{
+                      color:
+                        currentTelemetry && Math.abs(currentTelemetry.pitch) >= TILT_THRESHOLDS.pitch
+                          ? '#f44336'
+                          : undefined,
+                    }}
+                  >
+                    {currentTelemetry ? currentTelemetry.pitch.toFixed(1) + '°' : '—'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -357,15 +339,19 @@ export default function MonitoringPage() {
                 <div className={styles.chartLegend}>
                   <span className={styles.legendItem}>
                     <span className={styles.legendDot} style={{ backgroundColor: '#FF471D' }}></span>
-                    Kemiringan (°)
+                    Roll (°)
                   </span>
                   <span className={styles.legendItem}>
-                    <span className={styles.legendLine} style={{ borderColor: '#ff9800' }}></span>
-                    Batas Peringatan (15°)
+                    <span className={styles.legendDot} style={{ backgroundColor: '#29b6f6' }}></span>
+                    Pitch (°)
                   </span>
                   <span className={styles.legendItem}>
                     <span className={styles.legendLine} style={{ borderColor: '#f44336' }}></span>
-                    Batas Bahaya (30°)
+                    Batas Roll (20°)
+                  </span>
+                  <span className={styles.legendItem}>
+                    <span className={styles.legendLine} style={{ borderColor: '#ff9800' }}></span>
+                    Batas Pitch (15°)
                   </span>
                 </div>
               </div>
@@ -375,19 +361,19 @@ export default function MonitoringPage() {
                 {/* dari WebSocket / simulasi interval */}
                 <MonitoringChart
                   data={telemetryHistory}
-                  warningThreshold={TILT_THRESHOLDS.warning}
-                  dangerThreshold={TILT_THRESHOLDS.danger}
+                  rollThreshold={TILT_THRESHOLDS.roll}
+                  pitchThreshold={TILT_THRESHOLDS.pitch}
                 />
               </div>
               <p className={styles.chartNote}>
-                * Data diperbarui otomatis setiap 3 detik dari sensor kapal
+                * Data diperbarui otomatis (real-time) dari sensor kapal
               </p>
             </div>
           </div>
         </div>
 
         {/* === POPUP ALERT BAHAYA === */}
-        {/* Muncul saat kemiringan kapal melewati threshold 15-30° */}
+        {/* Muncul saat |roll| >= 20° atau |pitch| >= 15° */}
         {showAlert && dangerAlert && (
           <div className={styles.alertOverlay} onClick={dismissAlert}>
             <div
