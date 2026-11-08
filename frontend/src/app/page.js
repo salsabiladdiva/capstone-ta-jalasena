@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '../components/Navbar';
+import Chatbot from '../components/Chatbot';
 import styles from './page.module.css';
 
 /**
@@ -297,6 +298,8 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+      {/* Chatbot Gemini (pojok kanan bawah) */}
+      <Chatbot />
     </>
   );
 }
