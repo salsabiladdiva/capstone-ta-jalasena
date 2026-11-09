@@ -14,7 +14,7 @@
 
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -88,6 +88,13 @@ function createFishIcon(fishType) {
   });
 }
 
+// Cache icon per jenis ikan supaya animasi pulse tidak restart saat data refresh
+const iconCache = {};
+function getFishIcon(fishType) {
+  if (!iconCache[fishType]) iconCache[fishType] = createFishIcon(fishType);
+  return iconCache[fishType];
+}
+
 /**
  * Icon untuk posisi pengguna (nelayan)
  */
@@ -108,16 +115,25 @@ const userIcon = L.divIcon({
 });
 
 /**
- * Komponen untuk mengatur view peta saat data berubah
+ * Komponen untuk mengatur view peta.
+ * Kamera HANYA bergerak saat pencarian baru (fitKey berubah) atau saat
+ * zona dipilih/ditutup. Refresh data otomatis tidak menggerakkan kamera.
  */
-function MapController({ fishZones, selectedZone }) {
+function MapController({ fishZones, selectedZone, fitKey }) {
   const map = useMap();
+  const zonesRef = useRef(fishZones);
+  const selectedRef = useRef(selectedZone);
+
+  // Sinkronkan ref dengan props terbaru
+  useEffect(() => {
+    zonesRef.current = fishZones;
+    selectedRef.current = selectedZone;
+  });
 
   // Fix: invalidateSize saat pertama kali load dan saat resize
   // Ini mengatasi bug Leaflet di mobile dimana peta tidak ter-render
   // karena container belum memiliki dimensi yang benar saat inisialisasi
   useEffect(() => {
-    // Delay invalidateSize untuk memastikan container sudah ter-render
     const timer = setTimeout(() => {
       map.invalidateSize();
     }, 100);
@@ -127,7 +143,6 @@ function MapController({ fishZones, selectedZone }) {
       map.invalidateSize();
     }, 500);
 
-    // Listen untuk resize event
     const handleResize = () => {
       map.invalidateSize();
     };
@@ -140,20 +155,19 @@ function MapController({ fishZones, selectedZone }) {
     };
   }, [map]);
 
+  const selectedId = selectedZone?.id;
   useEffect(() => {
-    if (selectedZone) {
+    const zone = selectedRef.current;
+    const zones = zonesRef.current;
+    if (zone) {
       // Zoom ke zona yang dipilih
-      map.flyTo([selectedZone.latitude, selectedZone.longitude], 12, {
-        duration: 1,
-      });
-    } else if (fishZones.length > 0) {
+      map.flyTo([zone.latitude, zone.longitude], 12, { duration: 1 });
+    } else if (zones.length > 0) {
       // Fit bounds ke semua zona
-      const bounds = L.latLngBounds(
-        fishZones.map(z => [z.latitude, z.longitude])
-      );
+      const bounds = L.latLngBounds(zones.map(z => [z.latitude, z.longitude]));
       map.fitBounds(bounds, { padding: [50, 50], maxZoom: 11 });
     }
-  }, [fishZones, selectedZone, map]);
+  }, [fitKey, selectedId, map]);
 
   return null;
 }
@@ -170,6 +184,7 @@ export default function FishMap({
   isNavigating,
   onMarkerClick,
   mapMode = 'dark',
+  fitKey = 0,
 }) {
   // --- Buat rute navigasi (garis dari user ke zona terpilih) ---
   const routeLine = useMemo(() => {
@@ -199,7 +214,7 @@ export default function FishMap({
       />
 
       {/* Controller untuk auto-pan/zoom */}
-      <MapController fishZones={fishZones} selectedZone={selectedZone} />
+      <MapController fishZones={fishZones} selectedZone={selectedZone} fitKey={fitKey} />
 
       {/* --- Marker Posisi Pengguna --- */}
       {userPosition && (
@@ -235,7 +250,7 @@ export default function FishMap({
         <Marker
           key={zone.id}
           position={[zone.latitude, zone.longitude]}
-          icon={createFishIcon(zone.fish_type)}
+          icon={getFishIcon(zone.fish_type)}
           eventHandlers={{
             click: () => onMarkerClick(zone),
           }}

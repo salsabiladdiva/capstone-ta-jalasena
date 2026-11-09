@@ -10,7 +10,7 @@
    - Peringatan bahaya jika kemiringan > 15°
    
    Data didapat dari sensor IoT di kapal melalui 
-   WebSocket connection ke backend Django Channels
+   WebSocket (Django Channels) atau Firebase Firestore
    ================================================ */
 
 'use client';
@@ -30,6 +30,15 @@ const MonitoringChart = dynamic(() => import('../../components/MonitoringChart')
   loading: () => <div className={styles.chartLoading}>Memuat grafik...</div>,
 });
 
+// [BARU 1] Label sumber data yang ditampilkan di header dashboard
+const SOURCE_LABEL = {
+  websocket: '🟢 WebSocket (live)',
+  firestore: '🟢 Firebase (live)',
+  connecting: '🟡 Menghubungkan…',
+  dummy: '🟠 Data simulasi',
+  offline: '🔴 Tidak terhubung',
+};
+
 export default function MonitoringPage() {
   const router = useRouter();
   // --- State data kapal ---
@@ -41,6 +50,9 @@ export default function MonitoringPage() {
   const [currentTelemetry, setCurrentTelemetry] = useState(null);
   // Histori data untuk grafik
   const [telemetryHistory, setTelemetryHistory] = useState([]);
+
+  // [BARU 2] Sumber data yang sedang aktif (websocket / firestore / dummy / ...)
+  const [dataSource, setDataSource] = useState('connecting');
   
   // --- State alert bahaya ---
   const [dangerAlert, setDangerAlert] = useState(null);
@@ -93,9 +105,8 @@ export default function MonitoringPage() {
     loadHistory();
   }, [shipCode]);
 
-  // --- Koneksi WebSocket untuk data real-time ---
-  // Data telemetry dari sensor kapal dikirim via WebSocket
-  // dan ter-update otomatis setiap beberapa detik
+  // --- Koneksi real-time (WebSocket -> Firestore -> dummy) ---
+  // Data telemetry dari sensor kapal ter-update otomatis
   useEffect(() => {
     if (!shipCode) return;
 
@@ -135,13 +146,12 @@ export default function MonitoringPage() {
       }
     };
 
-    // Buat koneksi WebSocket (atau simulasi interval untuk dummy)
-    // TODO: Ganti dengan WebSocket nyata saat backend sudah terhubung
-    // ke sensor IoT kapal via Django Channels
+    // [BARU 3] Argumen ke-4 (setDataSource) melaporkan sumber data yang aktif
     socketRef.current = createMonitoringSocket(
       shipCode,
       handleTelemetryData,
-      (error) => console.error('WebSocket error:', error)
+      (error) => console.error('WebSocket error:', error),
+      setDataSource
     );
 
     // Cleanup saat unmount
@@ -192,6 +202,10 @@ export default function MonitoringPage() {
                 {shipData.owner && ` • ${shipData.owner}`}
               </p>
             )}
+            {/* [BARU 4] Indikator sumber data */}
+            <p className={styles.shipInfo}>
+              Sumber data: {SOURCE_LABEL[dataSource] || SOURCE_LABEL.connecting}
+            </p>
           </div>
           <div className={styles.headerRight}>
             {/* Indikator status keselamatan */}
@@ -358,7 +372,7 @@ export default function MonitoringPage() {
               <div className={styles.chartContainer}>
                 {/* Grafik Recharts - sumbu X: waktu, sumbu Y: derajat kemiringan */}
                 {/* Grafik ini akan ter-update otomatis setiap menerima data baru */}
-                {/* dari WebSocket / simulasi interval */}
+                {/* dari WebSocket / Firestore / simulasi interval */}
                 <MonitoringChart
                   data={telemetryHistory}
                   rollThreshold={TILT_THRESHOLDS.roll}

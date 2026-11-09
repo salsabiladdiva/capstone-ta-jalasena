@@ -1,0 +1,421 @@
+/* ================================================
+   JALASENA - About Page Styles
+   ================================================ */
+
+.aboutPage {
+  min-height: 100vh;
+  background-color: var(--color-primary);
+  padding-top: 80px;
+  padding-bottom: 60px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 20px 40px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-400);
+  line-height: 1.7;
+}
+
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === Fakta ringkas === */
+.factGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.factCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  background: var(--color-gray-800);
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-xl);
+}
+
+.factIcon {
+  font-size: 1.6rem;
+}
+
+.factLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+}
+
+.factValue {
+  font-size: var(--font-size-md);
+  color: var(--color-white);
+  line-height: 1.4;
+}
+
+/* === Section === */
+.section {
+  margin-bottom: 40px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--color-gray-800), var(--color-gray-900));
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-xl);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--color-white);
+}
+
+.subTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 28px 0 14px;
+  color: var(--color-gray-200);
+}
+
+.text {
+  font-size: var(--font-size-md);
+  color: var(--color-gray-300);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ghostBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  border: 1px solid var(--color-gray-600);
+  border-radius: var(--radius-full);
+  color: var(--color-gray-200);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.ghostBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* === Tim === */
+.personGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+.personCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 20px 14px;
+  background: var(--color-gray-900);
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-lg);
+}
+
+.personCard strong {
+  color: var(--color-white);
+}
+
+.personCard span {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* === Kartu daftar (bahasa, AI, akurasi) === */
+.listGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.listCard {
+  padding: 18px;
+  background: var(--color-gray-900);
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-lg);
+}
+
+.listCard strong {
+  display: block;
+  color: var(--color-white);
+  margin-bottom: 6px;
+}
+
+.listCard p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-300);
+  line-height: 1.7;
+}
+
+/* === Perangkat IoT === */
+.deviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.deviceCard {
+  overflow: hidden;
+  background: var(--color-gray-900);
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-lg);
+}
+
+.deviceImage {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: var(--color-gray-800);
+}
+
+.imagePlaceholder {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px;
+  text-align: center;
+  background: var(--color-gray-800);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+}
+
+.imagePlaceholder span {
+  font-size: 2rem;
+}
+
+.imagePlaceholder p {
+  margin: 0;
+}
+
+.imagePlaceholder code {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  word-break: break-all;
+}
+
+.deviceInfo {
+  padding: 16px 18px 20px;
+}
+
+.deviceInfo h4 {
+  margin: 0 0 4px;
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+}
+
+.spec {
+  display: block;
+  margin-bottom: 8px;
+  font-size: var(--font-size-xs);
+  color: var(--color-accent);
+}
+
+.deviceInfo p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-300);
+  line-height: 1.7;
+}
+
+/* === Cara kerja ringkas === */
+.twoCol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.flowCard {
+  padding: 20px;
+  background: var(--color-gray-900);
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-lg);
+}
+
+.flowCard h4 {
+  margin: 0 0 10px;
+  color: var(--color-white);
+}
+
+.flowLine {
+  margin: 0;
+  color: var(--color-gray-300);
+  line-height: 1.8;
+  font-size: var(--font-size-sm);
+}
+
+/* === Pipeline / timeline === */
+.pipeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pipeStep {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.pipeStep:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 38px;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-gray-700);
+}
+
+.pipeNumber {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.pipeBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.pipeHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.pipeHead h4 {
+  margin: 0;
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+}
+
+.pipeTech {
+  display: block;
+  margin: 4px 0 6px;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+}
+
+.pipeBody p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-300);
+  line-height: 1.7;
+}
+
+.badge {
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge_aktif {
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--color-success);
+}
+
+.badge_demo {
+  background: rgba(255, 152, 0, 0.15);
+  color: var(--color-warning);
+}
+
+.badge_rencana {
+  background: rgba(33, 150, 243, 0.15);
+  color: var(--color-info);
+}
+
+/* === Catatan === */
+.note {
+  padding: 20px 24px;
+  border-left: 4px solid var(--color-warning);
+  background: var(--color-gray-800);
+  border-radius: var(--radius-md);
+  color: var(--color-gray-300);
+}
+
+.note strong {
+  color: var(--color-white);
+}
+
+.note p {
+  margin: 8px 0 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+}
+
+/* === Mobile === */
+@media (max-width: 600px) {
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .section {
+    padding: 22px 18px;
+  }
+}

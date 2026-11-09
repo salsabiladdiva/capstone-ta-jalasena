@@ -3,6 +3,7 @@
    ================================================
    Halaman ini menampilkan:
    - Dropdown filter ikan (Kembung, Teri, Tongkol)
+   - Dropdown jam simulasi
    - Button "Cari" untuk mencari zona ikan
    - Peta interaktif Leaflet dengan marker zona ikan
    - Popup info marker (koordinat, jenis ikan, jarak)
@@ -17,6 +18,7 @@ import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import { FISH_TYPES } from '@/lib/constants';
 import { fetchFishZones, calculateDistance, formatDistance } from '@/lib/api';
+import { HOUR_OPTIONS, getSimTime, SIM_REFRESH_MS } from '@/lib/fishSimulation';
 import styles from './deteksi.module.css';
 
 // --- Import Leaflet Map secara dynamic (SSR disabled) ---
@@ -54,6 +56,14 @@ export default function DeteksiPage() {
   const [mapMode, setMapMode] = useState('dark');
   // State GPS permission
   const [gpsStatus, setGpsStatus] = useState('checking'); // 'checking' | 'granted' | 'denied' | 'prompt' | 'unavailable'
+  // Jam simulasi ('live' atau '0'-'23')
+  const [selectedHour, setSelectedHour] = useState('live');
+  // Ikan yang sedang dipantau (terisi setelah tombol Cari ditekan)
+  const [activeFish, setActiveFish] = useState('');
+  // Naik tiap pencarian baru -> peta zoom ulang ke semua zona
+  const [fitKey, setFitKey] = useState(0);
+  // Waktu update data terakhir
+  const [lastUpdate, setLastUpdate] = useState(null);
   // Ref for map wrapper to force resize
   const mapWrapperRef = useRef(null);
 
@@ -137,16 +147,36 @@ export default function DeteksiPage() {
 
     try {
       // TODO: Integrasi Copernicus Marine Service API
-      // Saat ini mengambil data dari dummy, nanti dari backend yang
+      // Saat ini mengambil data simulasi, nanti dari backend yang
       // terhubung ke Copernicus Marine Service satellite data
-      const zones = await fetchFishZones(selectedFish);
+      const zones = await fetchFishZones(selectedFish, getSimTime(selectedHour));
       setFishZones(zones);
+      setActiveFish(selectedFish);
+      setLastUpdate(new Date());
+      setFitKey((k) => k + 1);
     } catch (error) {
       console.error('Gagal mengambil data zona ikan:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [selectedFish]);
+  }, [selectedFish, selectedHour]);
+
+  // --- Auto refresh: data berubah saat jam diganti & tiap SIM_REFRESH_MS ---
+  useEffect(() => {
+    if (!activeFish) return;
+
+    const refresh = async () => {
+      const zones = await fetchFishZones(activeFish, getSimTime(selectedHour), { delay: 0 });
+      setFishZones(zones);
+      // Zona yang sedang dipilih ikut ter-update (koordinat/skor live)
+      setSelectedZone((prev) => (prev ? zones.find((z) => z.id === prev.id) || prev : null));
+      setLastUpdate(new Date());
+    };
+
+    refresh();
+    const timer = setInterval(refresh, SIM_REFRESH_MS);
+    return () => clearInterval(timer);
+  }, [activeFish, selectedHour]);
 
   // --- Handler saat marker ikan diklik ---
   const handleMarkerClick = useCallback((zone) => {
@@ -209,7 +239,7 @@ export default function DeteksiPage() {
       
       <main className={styles.deteksiPage}>
         {/* === FILTER BAR === */}
-        {/* Bar atas berisi dropdown filter ikan dan tombol cari */}
+        {/* Bar atas berisi dropdown filter ikan, jam, dan tombol cari */}
         <div className={styles.filterBar}>
           <div className={styles.filterContent}>
             <h1 className={styles.pageTitle}>
@@ -244,6 +274,19 @@ export default function DeteksiPage() {
                 <option value="light">Light Mode</option>
               </select>
 
+              {/* Dropdown pilih jam */}
+              <select
+                id="hour-select"
+                className={styles.fishSelect}
+                style={{ minWidth: 170 }}
+                value={selectedHour}
+                onChange={(e) => setSelectedHour(e.target.value)}
+              >
+                {HOUR_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+
               {/* Tombol Cari - trigger pencarian zona ikan */}
               <button
                 id="btn-search-fish"
@@ -268,7 +311,10 @@ export default function DeteksiPage() {
             {fishZones.length > 0 && (
               <p className={styles.resultInfo}>
                 Ditemukan <strong>{fishZones.length}</strong> zona potensial{' '}
-                {FISH_TYPES.find(f => f.id === selectedFish)?.name || ''}
+                {FISH_TYPES.find(f => f.id === activeFish)?.name || ''}
+                {lastUpdate && (
+                  <> · 🔄 {lastUpdate.toLocaleTimeString('id-ID')}</>
+                )}
               </p>
             )}
           </div>
@@ -320,6 +366,7 @@ export default function DeteksiPage() {
               isNavigating={isNavigating}
               onMarkerClick={handleMarkerClick}
               mapMode={mapMode}
+              fitKey={fitKey}
             />
           </div>
 

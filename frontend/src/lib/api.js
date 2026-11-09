@@ -7,7 +7,8 @@
                           jika PROJECT_ID belum diisi)
    ================================================ */
 
-import { DUMMY_FISH_ZONES, DUMMY_SHIPS, isTiltDanger } from './constants';
+import { DUMMY_SHIPS, FISH_TYPES, isTiltDanger } from './constants';
+import { generateFishZones } from './fishSimulation';
 import { collection, query, orderBy, limit, getDocs, onSnapshot } from 'firebase/firestore';
 import { getDb } from './firebase';
 
@@ -70,15 +71,16 @@ function telemetryQuery(count) {
 }
 
 /**
- * Mengambil daftar zona potensial ikan
+ * Mengambil daftar zona potensial ikan (data simulasi)
+ * - fishType : id ikan; kosong = semua ikan
+ * - when     : waktu simulasi (Date)
+ * - delay    : jeda simulasi loading (ms), 0 untuk auto-refresh
  */
-export async function fetchFishZones(fishType = '') {
+export async function fetchFishZones(fishType = '', when = new Date(), { delay = 800 } = {}) {
   if (USE_DUMMY_DATA) {
-    await new Promise(resolve => setTimeout(resolve, 800)); // Simulasi loading
-    if (fishType) {
-      return DUMMY_FISH_ZONES.filter(zone => zone.fish_type === fishType);
-    }
-    return DUMMY_FISH_ZONES;
+    if (delay) await new Promise(resolve => setTimeout(resolve, delay)); // Simulasi loading
+    const ids = fishType ? [fishType] : FISH_TYPES.map(f => f.id);
+    return ids.flatMap(id => generateFishZones(id, when));
   }
 }
 
