@@ -53,7 +53,12 @@
 }
 .header strong { display: block; font-size: 0.95rem; }
 .header span { font-size: 0.72rem; color: var(--color-gray-400); }
-.close { color: var(--color-gray-300); font-size: 1rem; padding: 4px 8px; }
+.close {
+  color: var(--color-gray-300);
+  background: transparent;
+  font-size: 1rem;
+  padding: 4px 8px;
+}
 .close:hover { color: var(--color-white); }
 
 .messages {
@@ -80,15 +85,19 @@
 
 .suggestions { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 .suggestions button {
-  padding: 7px 12px;
+  padding: 8px 14px;
   font-size: 0.8rem;
-  color: var(--color-gray-200);
-  border: 1px solid var(--color-gray-700);
+  color: var(--color-white);
+  background: rgba(255, 71, 29, 0.12);
+  border: 1px solid var(--color-accent);
   border-radius: 999px;
   text-align: left;
   transition: all 0.2s ease;
 }
-.suggestions button:hover { border-color: var(--color-accent); color: var(--color-white); }
+.suggestions button:hover {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
 
 .typing { display: flex; gap: 4px; padding: 14px; }
 .typing span {
