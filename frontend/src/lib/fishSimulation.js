@@ -250,18 +250,16 @@ export function generateFishZones(fishId, when = new Date()) {
 
   const zones = [];
   for (let k = 0; k < count; k++) {
-    // Tiap zona berpindah tempat setiap 50-120 detik
-    const period = 50 + (hashSeed(fishId, 'period', k) % 70);
-    const epoch = Math.floor((tSec + k * 17) / period);
-    const rng = rngFrom(fishId, dayKey, hour, k, epoch);
+    // Hotspot dipilih sekali per zona per hari (tidak berubah tiap detik)
+    // sehingga titik tidak loncat jauh (misal Semarang ke Jakarta)
+    const stableRng = rngFrom(fishId, dayKey, k, 'stable');
+    const hs = pickHotspot(stableRng, weights);
+    const base = samplePoint(stableRng, hs);
 
-    const hs = pickHotspot(rng, weights);
-    const base = samplePoint(rng, hs);
-
-    // Bergeser pelan di dalam periode tersebut
+    // Bergeser pelan di sekitar titik dasar (drift kecil, maks ~0.02 derajat ≈ 2 km)
     const dr = rngFrom(fishId, 'drift', k);
-    const amp = between(dr, 0.03, 0.09);
-    const per = between(dr, 120, 300);
+    const amp = between(dr, 0.008, 0.02);
+    const per = between(dr, 180, 600);
     const p1 = dr() * TWO_PI;
     const p2 = dr() * TWO_PI;
     const moved = {
@@ -274,12 +272,12 @@ export function generateFishZones(fishId, when = new Date()) {
     const wobble = 3 * Math.sin((TWO_PI * tSec) / between(dr, 40, 110) + p1);
     const score = clamp(
       Math.round(
-        55 + 25 * hs.richness * (0.7 + 0.3 * rng()) + 15 * timeFactor + gauss(rng) * 4 + wobble
+        55 + 25 * hs.richness * (0.7 + 0.3 * stableRng()) + 15 * timeFactor + gauss(stableRng) * 4 + wobble
       ),
       45,
       98
     );
-    const sstBase = between(rng, profile.sst[0], profile.sst[1]) + hs.sstBias;
+    const sstBase = between(stableRng, profile.sst[0], profile.sst[1]) + hs.sstBias;
     const sst = clamp(
       sstBase +
         0.35 * Math.sin((TWO_PI * (hourFloat - 9)) / 24) +
@@ -288,7 +286,7 @@ export function generateFishZones(fishId, when = new Date()) {
       profile.sst[1] + 0.5
     );
     const chl = clamp(
-      between(rng, profile.chl[0], profile.chl[1]) *
+      between(stableRng, profile.chl[0], profile.chl[1]) *
         hs.chlBias *
         (1 + 0.08 * Math.sin((TWO_PI * tSec) / 90 + p1)),
       0.3,
@@ -296,7 +294,7 @@ export function generateFishZones(fishId, when = new Date()) {
     );
 
     const tier = score >= 85 ? 'sangat tinggi' : score >= 72 ? 'tinggi' : 'sedang';
-    const note = profile.notes[Math.floor(rng() * profile.notes.length)];
+    const note = profile.notes[Math.floor(stableRng() * profile.notes.length)];
 
     zones.push({
       id: `${fishId}-${k + 1}`,
