@@ -72,7 +72,7 @@ function createFishIcon(fishType) {
           position: relative;
           z-index: 1;
         ">
-          ${fishConfig.icon}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.46-3.44 6-7 6s-7.56-2.54-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/></svg>
         </div>
       </div>
       <style>
@@ -222,7 +222,7 @@ export default function FishMap({
           <Marker position={[userPosition.lat, userPosition.lng]} icon={userIcon}>
             <Popup>
               <div style={{ fontFamily: 'Outfit, sans-serif', padding: '4px' }}>
-                <strong>📍 Posisi Anda</strong><br/>
+                <strong>Posisi Anda</strong><br/>
                 Lat: {userPosition.lat.toFixed(4)}°<br/>
                 Lng: {userPosition.lng.toFixed(4)}°
               </div>
@@ -262,16 +262,16 @@ export default function FishMap({
               minWidth: '200px',
             }}>
               <strong style={{ fontSize: '1.1rem' }}>
-                {FISH_TYPES.find(f => f.id === zone.fish_type)?.icon}{' '}
+                {FISH_TYPES.find(f => f.id === zone.fish_type)?.icon}{''}
                 {FISH_TYPES.find(f => f.id === zone.fish_type)?.name}
               </strong>
               <hr style={{ border: 'none', borderTop: '1px solid #555', margin: '8px 0' }}/>
-              <p style={{ margin: '4px 0' }}>📍 {zone.latitude.toFixed(4)}°, {zone.longitude.toFixed(4)}°</p>
-              <p style={{ margin: '4px 0' }}>🎯 Potensi: <strong style={{ color: '#FF471D' }}>{zone.potential_score}%</strong></p>
-              <p style={{ margin: '4px 0' }}>🌡️ SST: {zone.sst}°C</p>
+              <p style={{ margin: '4px 0' }}>{zone.latitude.toFixed(4)}°, {zone.longitude.toFixed(4)}°</p>
+              <p style={{ margin: '4px 0' }}>Potensi: <strong style={{ color: '#FF471D' }}>{zone.potential_score}%</strong></p>
+              <p style={{ margin: '4px 0' }}>SST: {zone.sst}°C</p>
               {userPosition && (
                 <p style={{ margin: '4px 0' }}>
-                  📏 Jarak: {formatDistance(calculateDistance(
+                  Jarak: {formatDistance(calculateDistance(
                     userPosition.lat, userPosition.lng,
                     zone.latitude, zone.longitude
                   ))}

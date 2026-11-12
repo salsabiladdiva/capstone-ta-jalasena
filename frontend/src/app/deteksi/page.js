@@ -243,7 +243,6 @@ export default function DeteksiPage() {
         <div className={styles.filterBar}>
           <div className={styles.filterContent}>
             <h1 className={styles.pageTitle}>
-              <span className={styles.pageTitleIcon}>🎯</span>
               Deteksi Zona Ikan
             </h1>
             
@@ -300,9 +299,7 @@ export default function DeteksiPage() {
                     Mencari...
                   </>
                 ) : (
-                  <>
-                    🔍 Cari
-                  </>
+                  <>Cari</>
                 )}
               </button>
             </div>
@@ -310,10 +307,10 @@ export default function DeteksiPage() {
             {/* Info jumlah zona ditemukan */}
             {fishZones.length > 0 && (
               <p className={styles.resultInfo}>
-                Ditemukan <strong>{fishZones.length}</strong> zona potensial{' '}
+                Ditemukan <strong>{fishZones.length}</strong> zona potensial 
                 {FISH_TYPES.find(f => f.id === activeFish)?.name || ''}
                 {lastUpdate && (
-                  <> · 🔄 {lastUpdate.toLocaleTimeString('id-ID')}</>
+                  <> · {lastUpdate.toLocaleTimeString('id-ID')}</>
                 )}
               </p>
             )}
@@ -325,7 +322,10 @@ export default function DeteksiPage() {
           <div className={styles.gpsBanner}>
             <div className={styles.gpsBannerContent}>
               <span className={styles.gpsBannerIcon}>
-                {gpsStatus === 'denied' ? '🚫' : '📍'}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
               </span>
               <div className={styles.gpsBannerText}>
                 <strong>
@@ -376,44 +376,44 @@ export default function DeteksiPage() {
               {/* Header info panel */}
               <div className={styles.infoPanelHeader}>
                 <h3>
-                  {FISH_TYPES.find(f => f.id === selectedZone.fish_type)?.icon}{' '}
                   {FISH_TYPES.find(f => f.id === selectedZone.fish_type)?.name}
                 </h3>
                 <button
                   className={styles.closeBtn}
                   onClick={() => { setSelectedZone(null); setIsNavigating(false); }}
+                  aria-label="Tutup"
                 >
-                  ✕
+                  &times;
                 </button>
               </div>
 
               {/* Informasi koordinat dan jarak */}
               <div className={styles.infoDetails}>
                 <div className={styles.infoRow}>
-                  <span className={styles.infoLabel}>📍 Latitude</span>
+                  <span className={styles.infoLabel}>Latitude</span>
                   <span className={styles.infoValue}>{selectedZone.latitude.toFixed(4)}°</span>
                 </div>
                 <div className={styles.infoRow}>
-                  <span className={styles.infoLabel}>📍 Longitude</span>
+                  <span className={styles.infoLabel}>Longitude</span>
                   <span className={styles.infoValue}>{selectedZone.longitude.toFixed(4)}°</span>
                 </div>
                 <div className={styles.infoRow}>
-                  <span className={styles.infoLabel}>🎯 Potensi</span>
+                  <span className={styles.infoLabel}>Potensi</span>
                   <span className={styles.infoValue} style={{ color: 'var(--color-accent)' }}>
                     {selectedZone.potential_score}%
                   </span>
                 </div>
                 <div className={styles.infoRow}>
-                  <span className={styles.infoLabel}>🌡️ SST</span>
+                  <span className={styles.infoLabel}>SST</span>
                   <span className={styles.infoValue}>{selectedZone.sst}°C</span>
                 </div>
                 <div className={styles.infoRow}>
-                  <span className={styles.infoLabel}>🧪 Chlorophyll</span>
+                  <span className={styles.infoLabel}>Chlorophyll</span>
                   <span className={styles.infoValue}>{selectedZone.chlorophyll} mg/m³</span>
                 </div>
                 {userPosition && (
                   <div className={styles.infoRow}>
-                    <span className={styles.infoLabel}>📏 Jarak</span>
+                    <span className={styles.infoLabel}>Jarak</span>
                     <span className={styles.infoValue}>
                       {formatDistance(getDistanceToZone(selectedZone))}
                     </span>
@@ -428,20 +428,16 @@ export default function DeteksiPage() {
                   id="btn-navigate"
                   className={`btn-primary ${styles.navigateBtn}`}
                   onClick={handleNavigate}
-                >
-                  🧭 Menuju ke Titik Ini
-                </button>
+                >Menuju ke Titik Ini</button>
               ) : (
                 <div className={styles.navInfo}>
-                  <h4 style={{ color: 'var(--color-accent)', marginBottom: '12px' }}>
-                    🧭 Navigasi Aktif
-                  </h4>
+                  <h4 style={{ color: 'var(--color-accent)', marginBottom: '12px' }}>Navigasi Aktif</h4>
                   <div className={styles.infoRow}>
-                    <span className={styles.infoLabel}>⚡ Kecepatan</span>
+                    <span className={styles.infoLabel}>Kecepatan</span>
                     <span className={styles.infoValue}>{navSpeed} knot</span>
                   </div>
                   <div className={styles.infoRow}>
-                    <span className={styles.infoLabel}>📏 Sisa Jarak</span>
+                    <span className={styles.infoLabel}>Sisa Jarak</span>
                     <span className={styles.infoValue}>
                       {navDistance !== null ? formatDistance(navDistance) : '-'}
                     </span>
@@ -460,7 +456,12 @@ export default function DeteksiPage() {
         {hasArrived && (
           <div className={styles.arrivalOverlay} onClick={() => setHasArrived(false)}>
             <div className={styles.arrivalPopup}>
-              <div className={styles.arrivalIcon}>🎉</div>
+              <div className={styles.arrivalIcon} style={{ display: 'flex', justifyContent: 'center' }}>
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </div>
               <h2>Kamu Telah Sampai!</h2>
               <p>Anda telah tiba di zona potensial ikan. Selamat menangkap ikan!</p>
               <button

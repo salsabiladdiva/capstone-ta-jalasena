@@ -150,17 +150,32 @@ export default function LandingPage() {
 
           <div className={styles.featureGrid}>
             <div className={`${styles.featureCard} ${featuresInView ? styles.featureCardVisible : ''}`} style={{ animationDelay: '0s' }}>
-              <div className={styles.featureIconBg}>🎯</div>
+              <div className={styles.featureIconBg}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="6" />
+                  <circle cx="12" cy="12" r="2" />
+                </svg>
+              </div>
               <h3>Deteksi Zona Ikan</h3>
               <p>Peta interaktif menunjukkan titik potensial ikan berdasarkan analisis data SST dan Chlorophyll dari satelit Copernicus Marine Service</p>
             </div>
             <div className={`${styles.featureCard} ${featuresInView ? styles.featureCardVisible : ''}`} style={{ animationDelay: '0.15s' }}>
-              <div className={styles.featureIconBg}>🧭</div>
+              <div className={styles.featureIconBg}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                </svg>
+              </div>
               <h3>Navigasi GPS</h3>
               <p>Panduan navigasi real-time menuju titik tangkapan ikan dengan informasi jarak, kecepatan, dan notifikasi sampai tujuan</p>
             </div>
             <div className={`${styles.featureCard} ${featuresInView ? styles.featureCardVisible : ''}`} style={{ animationDelay: '0.3s' }}>
-              <div className={styles.featureIconBg}>📊</div>
+              <div className={styles.featureIconBg}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 3v18h18" />
+                  <path d="m19 9-5 5-4-4-3 3" />
+                </svg>
+              </div>
               <h3>Monitoring Kapal</h3>
               <p>Dashboard monitoring kemiringan kapal real-time dari sensor IoT dengan peringatan dini bahaya terbalik</p>
             </div>
@@ -233,18 +248,17 @@ export default function LandingPage() {
           {/* Grid anggota tim - ganti nama dengan nama tim mu */}
           <div className={styles.teamGrid}>
             {[
-              { name: 'Anggota 1', role: 'Project Lead', emoji: '👨‍💻' },
-              { name: 'Anggota 2', role: 'Backend Developer', emoji: '⚙️' },
-              { name: 'Anggota 3', role: 'Frontend Developer', emoji: '🎨' },
-              { name: 'Anggota 4', role: 'Data Scientist', emoji: '📊' },
-              { name: 'Anggota 5', role: 'IoT Engineer', emoji: '🔧' },
+              { name: 'Anggota 1', role: 'Project Lead' },
+              { name: 'Anggota 2', role: 'Backend Developer' },
+              { name: 'Anggota 3', role: 'Frontend Developer' },
+              { name: 'Anggota 4', role: 'Data Scientist' },
+              { name: 'Anggota 5', role: 'IoT Engineer' },
             ].map((member, idx) => (
               <div
                 key={idx}
                 className={`${styles.teamMember} ${aboutInView ? styles.teamMemberVisible : ''}`}
                 style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                <span className={styles.memberEmoji}>{member.emoji}</span>
                 <h4>{member.name}</h4>
                 <p>{member.role}</p>
               </div>

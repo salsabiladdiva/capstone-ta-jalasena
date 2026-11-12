@@ -41,10 +41,10 @@ const SUPERVISORS = [
 
 // ISI: tanggal HKI, durasi, dan institusi
 const FACTS = [
-    { icon: '📜', label: 'Hak Kekayaan Intelektual (HKI)', value: 'Jumat, 06 November 2026' },
-    { icon: '⏱️', label: 'Lama Pengerjaan', value: '11 bulan (Januari-November 2026)' },
-    { icon: '🏫', label: 'Institusi', value: 'Teknik Komputer, Universitas Diponegoro' },
-    { icon: '🎯', label: 'Wilayah Fokus', value: 'Laut Jawa' },
+    { icon: '', label: 'Hak Kekayaan Intelektual (HKI)', value: 'Jumat, 06 November 2026' },
+    { icon: '', label: 'Lama Pengerjaan', value: '11 bulan (Januari-November 2026)' },
+    { icon: '', label: 'Institusi', value: 'Teknik Komputer, Universitas Diponegoro' },
+    { icon: '', label: 'Wilayah Fokus', value: 'Laut Jawa' },
 ];
 
 // Bahasa pemrograman (kecuali C++, semuanya terlihat di kode proyek)
@@ -229,7 +229,10 @@ function ImageSlot({ src, alt }) {
     if (failed) {
         return (
             <div className={styles.imagePlaceholder}>
-                <span>📷</span>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                  <circle cx="12" cy="13" r="3" />
+                </svg>
                 <p>Foto belum ditambahkan</p>
                 <code>public{src}</code>
             </div>
@@ -298,7 +301,7 @@ export default function AboutPage() {
 
                     {/* === TENTANG === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>🌊 Apa yang Dikerjakan JALASENA?</h2>
+                        <h2 className={styles.sectionTitle}>Apa yang Dikerjakan JALASENA?</h2>
                         <p className={styles.text}>
                             JALASENA punya dua fungsi utama. Pertama, <strong>Deteksi Zona Ikan</strong>: memetakan
                             lokasi yang berpotensi banyak ikan kembung, teri, dan tongkol berdasarkan suhu
@@ -307,14 +310,14 @@ export default function AboutPage() {
                             dini agar kapal tidak terbalik.
                         </p>
                         <div className={styles.ctaRow}>
-                            <Link href="/deteksi" className="btn-primary">🎯 Coba Deteksi Zona Ikan</Link>
-                            <Link href="/tutorial" className={styles.ghostBtn}>📖 Lihat Tutorial</Link>
+                            <Link href="/deteksi" className="btn-primary">Coba Deteksi Zona Ikan</Link>
+                            <Link href="/tutorial" className={styles.ghostBtn}>Lihat Tutorial</Link>
                         </div>
                     </section>
 
                     {/* === TIM === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>👥 Tim Pengembang</h2>
+                        <h2 className={styles.sectionTitle}>Tim Pengembang</h2>
                         <div className={styles.personGrid}>
                             {TEAM.map((p) => (
                                 <div key={p.name} className={styles.personCard}>
@@ -329,7 +332,12 @@ export default function AboutPage() {
                         <div className={styles.personGrid}>
                             {SUPERVISORS.map((p) => (
                                 <div key={p.role} className={styles.personCard}>
-                                    <div className={styles.avatar}>🎓</div>
+                                    <div className={styles.avatar} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
                                     <strong>{p.name}</strong>
                                     <span>{p.role}</span>
                                 </div>
@@ -339,7 +347,7 @@ export default function AboutPage() {
 
                     {/* === TEKNOLOGI === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>💻 Teknologi yang Digunakan</h2>
+                        <h2 className={styles.sectionTitle}>Teknologi yang Digunakan</h2>
 
                         <h3 className={styles.subTitle}>Bahasa Pemrograman</h3>
                         <div className={styles.listGrid}>
@@ -364,7 +372,7 @@ export default function AboutPage() {
 
                     {/* === PERANGKAT IOT === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>📡 Perangkat IoT di Kapal</h2>
+                        <h2 className={styles.sectionTitle}>Perangkat IoT di Kapal</h2>
                         <p className={styles.text}>
                             Satu perangkat dipasang di kapal. Semua sensor dikendalikan oleh satu mikrokontroler
                             ESP32 yang mengirim datanya lewat internet.
@@ -385,16 +393,16 @@ export default function AboutPage() {
 
                     {/* === CARA KERJA RINGKAS === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>⚙️ Cara Kerja Sistem</h2>
+                        <h2 className={styles.sectionTitle}>Cara Kerja Sistem</h2>
                         <div className={styles.twoCol}>
                             <div className={styles.flowCard}>
-                                <h4>🐟 Deteksi Zona Ikan</h4>
+                                <h4>Deteksi Zona Ikan</h4>
                                 <p className={styles.flowLine}>
                                     Satelit Copernicus → Pemrosesan data → Skor potensi → API → Peta di website
                                 </p>
                             </div>
                             <div className={styles.flowCard}>
-                                <h4>🚢 Monitoring Kapal</h4>
+                                <h4>Monitoring Kapal</h4>
                                 <p className={styles.flowLine}>
                                     Sensor kapal → ESP32 → Firebase → Dashboard real-time → Peringatan dini
                                 </p>
@@ -404,18 +412,18 @@ export default function AboutPage() {
 
                     {/* === ALUR TEKNIS === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>🛰️ Alur Teknis: Dari Satelit ke Website</h2>
+                        <h2 className={styles.sectionTitle}>Alur Teknis: Dari Satelit ke Website</h2>
                         <Pipeline steps={FISH_PIPELINE} />
                     </section>
 
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>🚢 Alur Teknis: Monitoring Kapal</h2>
+                        <h2 className={styles.sectionTitle}>Alur Teknis: Monitoring Kapal</h2>
                         <Pipeline steps={MONITOR_PIPELINE} />
                     </section>
 
                     {/* === AKURASI === */}
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>✅ Mengapa Monitoring Bisa Diandalkan</h2>
+                        <h2 className={styles.sectionTitle}>Mengapa Monitoring Bisa Diandalkan</h2>
                         <div className={styles.listGrid}>
                             {ACCURACY.map((a) => (
                                 <div key={a.title} className={styles.listCard}>

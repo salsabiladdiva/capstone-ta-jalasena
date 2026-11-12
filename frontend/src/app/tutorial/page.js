@@ -24,7 +24,7 @@ export default function TutorialPage() {
         {/* Header halaman tutorial */}
         <div className={styles.header}>
           <h1 className={styles.title}>
-            📖 Panduan Penggunaan <span className={styles.accent}>JALASENA</span>
+            Panduan Penggunaan <span className={styles.accent}>JALASENA</span>
           </h1>
           <p className={styles.subtitle}>
             Pelajari cara menggunakan sistem JALASENA untuk menemukan zona ikan potensial dan memantau keselamatan kapal Anda.
@@ -36,7 +36,6 @@ export default function TutorialPage() {
 
           {/* === SECTION 1: Tentang JALASENA === */}
           <section className={styles.section}>
-            <div className={styles.sectionIcon}>🌊</div>
             <h2 className={styles.sectionTitle}>Apa itu JALASENA?</h2>
             <p className={styles.sectionText}>
               <strong>JALASENA</strong> (Sistem Terintegrasi Prediksi Wilayah Ikan dan Peringatan Dini Kondisi Kapal) 
@@ -48,7 +47,6 @@ export default function TutorialPage() {
 
           {/* === SECTION 2: Cara Mendapatkan Ship ID === */}
           <section className={styles.section}>
-            <div className={styles.sectionIcon}>🔑</div>
             <h2 className={styles.sectionTitle}>Cara Mendapatkan Ship ID</h2>
             <p className={styles.sectionText}>
               Ship ID adalah kode unik yang diberikan kepada setiap kapal yang terdaftar dalam sistem JALASENA. 
@@ -109,7 +107,6 @@ export default function TutorialPage() {
 
           {/* === SECTION 3: Fitur Deteksi Zona Ikan === */}
           <section className={styles.section}>
-            <div className={styles.sectionIcon}>🎯</div>
             <h2 className={styles.sectionTitle}>Menggunakan Deteksi Zona Ikan</h2>
             <p className={styles.sectionText}>
               Fitur ini membantu nelayan menemukan zona potensial ikan berdasarkan analisis 
@@ -168,7 +165,6 @@ export default function TutorialPage() {
 
           {/* === SECTION 4: Monitoring Kapal === */}
           <section className={styles.section}>
-            <div className={styles.sectionIcon}>📊</div>
             <h2 className={styles.sectionTitle}>Dashboard Monitoring Kapal</h2>
             <p className={styles.sectionText}>
               Dashboard monitoring memungkinkan keluarga nelayan memantau kondisi kapal secara real-time 
@@ -177,22 +173,18 @@ export default function TutorialPage() {
 
             <div className={styles.featureGrid}>
               <div className={styles.featureItem}>
-                <span className={styles.featureIcon}>📍</span>
                 <h4>Posisi Kapal</h4>
                 <p>Koordinat longitude dan latitude kapal saat ini ditampilkan di peta</p>
               </div>
               <div className={styles.featureItem}>
-                <span className={styles.featureIcon}>📈</span>
                 <h4>Grafik Kemiringan</h4>
                 <p>Grafik real-time menunjukkan derajat kemiringan kapal (diperbarui otomatis)</p>
               </div>
               <div className={styles.featureItem}>
-                <span className={styles.featureIcon}>🌡️</span>
                 <h4>Suhu Air Laut</h4>
                 <p>Suhu permukaan air laut di sekitar kapal</p>
               </div>
               <div className={styles.featureItem}>
-                <span className={styles.featureIcon}>⚠️</span>
                 <h4>Peringatan Bahaya</h4>
                 <p>Notifikasi otomatis jika kemiringan kapal mencapai level berbahaya (15-30°)</p>
               </div>
@@ -201,7 +193,6 @@ export default function TutorialPage() {
 
           {/* === SECTION 5: Threshold Keselamatan === */}
           <section className={styles.section}>
-            <div className={styles.sectionIcon}>⚠️</div>
             <h2 className={styles.sectionTitle}>Tingkat Peringatan Kemiringan</h2>
             <p className={styles.sectionText}>
               Sistem AI kami menganalisis pola kemiringan kapal dari sensor accelerometer 

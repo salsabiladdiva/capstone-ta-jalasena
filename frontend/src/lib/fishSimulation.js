@@ -12,8 +12,8 @@ export const SIM_REFRESH_MS = 5000;
 
 // ------------------------------------------------
 // 1. Peta laut (. = laut, # = daratan / dekat daratan)
-//    Grid 0.1° mulai dari lat -3.7 (baris atas) & lng 106.3 (kolom kiri).
-//    Sudah dibuffer ±11 km dari daratan.
+// Grid 0.1° mulai dari lat -3.7 (baris atas) & lng 106.3 (kolom kiri).
+// Sudah dibuffer ±11 km dari daratan.
 // ------------------------------------------------
 const GRID_LAT_N = -3.7;
 const GRID_LNG_W = 106.3;
@@ -103,7 +103,7 @@ function gauss(rng) {
 
 // ------------------------------------------------
 // 3. Area tangkapan (hotspot) di Laut Jawa
-//    type: pesisir | tengah | lepas ; r = sebaran (derajat)
+// type: pesisir | tengah | lepas ; r = sebaran (derajat)
 // ------------------------------------------------
 const HOTSPOTS = [
   // --- Pesisir utara Jawa (barat -> timur) ---
@@ -140,7 +140,7 @@ const HOTSPOTS = [
 
 // ------------------------------------------------
 // 4. Profil tiap ikan (inilah yang membuat data tiap ikan beda)
-//    peakHour = jam aktivitas puncak (asumsi simulasi)
+// peakHour = jam aktivitas puncak (asumsi simulasi)
 // ------------------------------------------------
 const FISH_PROFILES = {
   kembung: {
@@ -314,10 +314,10 @@ export function generateFishZones(fishId, when = new Date()) {
 // 6. Helper pemilihan jam untuk UI
 // ------------------------------------------------
 export const HOUR_OPTIONS = [
-  { value: 'live', label: '🔴 Sekarang (Live)' },
+  { value: 'live', label: 'Sekarang (Live)' },
   ...Array.from({ length: 24 }, (_, h) => ({
     value: String(h),
-    label: `🕐 ${String(h).padStart(2, '0')}.00 WIB`,
+    label: `${String(h).padStart(2, '0')}.00 WIB`,
   })),
 ];
 

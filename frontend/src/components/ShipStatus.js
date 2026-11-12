@@ -70,7 +70,7 @@ export default function ShipStatus({ shipCode, telemetry, ship }) {
             <div className={styles.infoRow}>
               <span className={styles.label}>Status:</span>
               <span className={`${styles.value} ${telemetry.is_moving ? styles.moving : styles.stopped}`}>
-                {telemetry.is_moving ? '🚢 Berlayar' : '⚓ Berhenti'}
+                {telemetry.is_moving ? 'Berlayar' : 'Berhenti'}
               </span>
             </div>
           </div>
@@ -79,14 +79,14 @@ export default function ShipStatus({ shipCode, telemetry, ship }) {
 
       {isDanger && (
         <div className={styles.alertBox}>
-          <strong>⚠️ PERINGATAN BAHAYA!</strong>
+          <strong>PERINGATAN BAHAYA!</strong>
           <p>Kapal miring lebih dari 30°. Risiko tinggi kapal terbalik!</p>
         </div>
       )}
       
       {isWarning && (
         <div className={`${styles.alertBox} ${styles.warningBox}`}>
-          <strong>⚠️ PERHATIAN</strong>
+          <strong>PERHATIAN</strong>
           <p>Kapal miring antara 15-30°. Harap perhatikan gelombang.</p>
         </div>
       )}

@@ -45,7 +45,7 @@ function CustomTooltip({ active, payload, label, rollThreshold, pitchThreshold }
         fontFamily: 'Outfit, sans-serif',
         boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
       }}>
-        <p style={{ color: '#9e9e9e', marginBottom: '6px' }}>⏰ {label}</p>
+        <p style={{ color: '#9e9e9e', marginBottom: '6px' }}>{label}</p>
         <p style={{ color: '#FF471D', fontWeight: 700 }}>
           Roll: {Number(p.roll).toFixed(1)}°
         </p>

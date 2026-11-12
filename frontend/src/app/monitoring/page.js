@@ -32,11 +32,11 @@ const MonitoringChart = dynamic(() => import('../../components/MonitoringChart')
 
 // [BARU 1] Label sumber data yang ditampilkan di header dashboard
 const SOURCE_LABEL = {
-  websocket: '🟢 WebSocket (live)',
-  firestore: '🟢 Firebase (live)',
-  connecting: '🟡 Menghubungkan…',
-  dummy: '🟠 Data simulasi',
-  offline: '🔴 Tidak terhubung',
+  websocket: 'WebSocket (live)',
+  firestore: 'Firebase (live)',
+  connecting: 'Menghubungkan…',
+  dummy: 'Data simulasi',
+  offline: 'Tidak terhubung',
 };
 
 export default function MonitoringPage() {
@@ -194,7 +194,7 @@ export default function MonitoringPage() {
         <div className={styles.dashboardHeader}>
           <div className={styles.headerLeft}>
             <h1 className={styles.dashboardTitle}>
-              📊 Monitoring Dashboard
+              Monitoring Dashboard
             </h1>
             {shipData && (
               <p className={styles.shipInfo}>
@@ -232,7 +232,12 @@ export default function MonitoringPage() {
             {/* Card Posisi Kapal */}
             <div className={styles.infoCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>📍</span>
+                <span className={styles.cardIcon}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </span>
                 <h3>Posisi Kapal Saat Ini</h3>
               </div>
               <div className={styles.cardContent}>
@@ -254,7 +259,11 @@ export default function MonitoringPage() {
             {/* Card Suhu */}
             <div className={styles.infoCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>🌡️</span>
+                <span className={styles.cardIcon}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+                  </svg>
+                </span>
                 <h3>Suhu Air Laut</h3>
               </div>
               <div className={styles.cardContent}>
@@ -270,7 +279,15 @@ export default function MonitoringPage() {
             {/* Card Kemiringan Saat Ini */}
             <div className={styles.infoCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>⚖️</span>
+                <span className={styles.cardIcon}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="m4.93 4.93 4.24 4.24" />
+                    <path d="m14.83 9.17 4.24-4.24" />
+                    <path d="M12 2v4" />
+                    <path d="M12 18v4" />
+                  </svg>
+                </span>
                 <h3>Kemiringan Kapal</h3>
               </div>
               <div className={styles.cardContent}>
@@ -308,7 +325,13 @@ export default function MonitoringPage() {
             {/* Card Status Kapal */}
             <div className={styles.infoCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>🚢</span>
+                <span className={styles.cardIcon}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.5 0 2.5 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+                    <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76" />
+                    <path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6" />
+                  </svg>
+                </span>
                 <h3>Status Kapal</h3>
               </div>
               <div className={styles.cardContent}>
@@ -338,7 +361,7 @@ export default function MonitoringPage() {
                 {/* Info kapal berhenti */}
                 {currentTelemetry && !currentTelemetry.is_moving && (
                   <div className={styles.stoppedInfo}>
-                    ⚓ Kapal sedang berlabuh atau berhenti. Pastikan kapal dalam kondisi aman.
+                    Kapal sedang berlabuh atau berhenti. Pastikan kapal dalam kondisi aman.
                   </div>
                 )}
               </div>
@@ -349,7 +372,7 @@ export default function MonitoringPage() {
           <div className={styles.rightColumn}>
             <div className={styles.chartCard}>
               <div className={styles.chartHeader}>
-                <h3>📈 Grafik Kemiringan Kapal (Real-time)</h3>
+                <h3>Grafik Kemiringan Kapal (Real-time)</h3>
                 <div className={styles.chartLegend}>
                   <span className={styles.legendItem}>
                     <span className={styles.legendDot} style={{ backgroundColor: '#FF471D' }}></span>
@@ -398,7 +421,7 @@ export default function MonitoringPage() {
             >
               {/* Icon alert */}
               <div className={styles.alertIcon}>
-                {dangerAlert.type === 'danger' ? '🚨' : '⚠️'}
+                {dangerAlert.type === 'danger' ? '' : ''}
               </div>
               {/* Pesan alert */}
               <h2 className={styles.alertTitle}>

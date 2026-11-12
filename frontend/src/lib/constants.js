@@ -28,9 +28,9 @@ export const MAP_CONFIG = {
 
 // --- Jenis Ikan ---
 export const FISH_TYPES = [
-  { id: 'kembung', name: 'Ikan Kembung', icon: '🐟', color: '#4FC3F7' },
-  { id: 'teri', name: 'Ikan Teri', icon: '🐠', color: '#81C784' },
-  { id: 'tongkol', name: 'Ikan Tongkol', icon: '🐡', color: '#FFB74D' },
+  { id: 'kembung', name: 'Ikan Kembung', icon: '', color: '#4FC3F7' },
+  { id: 'teri', name: 'Ikan Teri', icon: '', color: '#81C784' },
+  { id: 'tongkol', name: 'Ikan Tongkol', icon: '', color: '#FFB74D' },
 ];
 
 // --- Data Zona Ikan ---
@@ -78,8 +78,8 @@ export const DUMMY_SHIPS = [
 // BAHAYA jika |roll| >= 20° ATAU |pitch| >= 15°
 // Data roll & pitch didapat dari sensor accelerometer/gyroscope di kapal
 export const TILT_THRESHOLDS = {
-  roll: 20,   // |roll| >= 20° = bahaya
-  pitch: 15,  // |pitch| >= 15° = bahaya
+  roll: 20, // |roll| >= 20° = bahaya
+  pitch: 15, // |pitch| >= 15° = bahaya
 };
 
 // Mengembalikan true jika kapal dalam kondisi bahaya
@@ -92,9 +92,9 @@ export function isTiltDanger(roll, pitch) {
 
 // --- Konfigurasi Navigasi ---
 export const NAV_CONFIG = {
-  arrivalRadius: 100,      // Jarak (meter) dianggap "sampai" di titik tujuan
-  updateInterval: 5000,    // Interval update posisi GPS (ms)
-  speedUnit: 'knot',       // Satuan kecepatan
+  arrivalRadius: 100, // Jarak (meter) dianggap "sampai" di titik tujuan
+  updateInterval: 5000, // Interval update posisi GPS (ms)
+  speedUnit: 'knot', // Satuan kecepatan
 };
 
 // --- Local Storage Keys ---

@@ -9,7 +9,7 @@ import styles from './Chatbot.module.css';
 
 const GREETING = {
   role: 'model',
-  text: 'Halo! Aku asisten JALASENA 👋 Tanyakan apa saja tentang zona ikan, navigasi, atau monitoring kapal.',
+  text: 'Halo! Saya asisten JALASENA. Tanyakan apa saja tentang zona ikan, navigasi, atau monitoring kapal.',
 };
 
 const SUGGESTIONS = [
@@ -33,9 +33,9 @@ export default function Chatbot() {
 
   // Tutup chat sekaligus hapus semua percakapan
   function closeChat() {
-    sessionRef.current += 1;      // tandai bahwa sesi lama sudah berakhir
+    sessionRef.current += 1; // tandai bahwa sesi lama sudah berakhir
     setOpen(false);
-    setMessages([GREETING]);      // kembali ke sapaan awal
+    setMessages([GREETING]); // kembali ke sapaan awal
     setInput('');
     setLoading(false);
   }
@@ -66,7 +66,7 @@ export default function Chatbot() {
       setMessages([...next, { role: 'model', text: data.reply }]);
     } catch (err) {
       if (session !== sessionRef.current) return;
-      setMessages([...next, { role: 'model', text: `⚠️ ${err.message}`, isError: true }]);
+      setMessages([...next, { role: 'model', text: `${err.message}`, isError: true }]);
     } finally {
       if (session === sessionRef.current) setLoading(false);
     }
@@ -92,7 +92,7 @@ export default function Chatbot() {
               onClick={closeChat}
               aria-label="Tutup chat"
             >
-              ✕
+              
             </button>
           </div>
 
@@ -133,8 +133,11 @@ export default function Chatbot() {
               disabled={loading}
               aria-label="Pesan"
             />
-            <button type="submit" disabled={loading || !input.trim()} aria-label="Kirim">
-              ➤
+            <button type="submit" disabled={loading || !input.trim()} aria-label="Kirim" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
             </button>
           </form>
         </div>
@@ -147,7 +150,13 @@ export default function Chatbot() {
         aria-label={open ? 'Tutup chatbot' : 'Buka chatbot'}
         id="btn-chatbot"
       >
-        {open ? '✕' : '💬'}
+        {open ? (
+          <span style={{ fontSize: '22px', lineHeight: 1 }}>&times;</span>
+        ) : (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        )}
       </button>
     </>
   );
