@@ -4,9 +4,7 @@
    Dashboard untuk keluarga nelayan memantau kondisi 
    kapal secara real-time, meliputi:
    - Grafik kemiringan kapal (real-time update)
-   - Posisi kapal saat ini (longitude, latitude)
-   - Suhu air laut saat ini
-   - Status kapal (berlayar/berhenti)
+   - Peta posisi kapal / titik bahaya (OpenStreetMap & Esri)
    - Peringatan bahaya jika kemiringan > 15°
    
    Data didapat dari sensor IoT di kapal melalui 
@@ -28,6 +26,12 @@ import styles from './monitoring.module.css';
 const MonitoringChart = dynamic(() => import('../../components/MonitoringChart'), {
   ssr: false,
   loading: () => <div className={styles.chartLoading}>Memuat grafik...</div>,
+});
+
+// --- Peta lokasi kapal (Leaflet, SSR disabled) ---
+const ShipLocationMap = dynamic(() => import('../../components/ShipLocationMap'), {
+  ssr: false,
+  loading: () => <div className={styles.chartLoading} style={{ height: 260 }}>Memuat peta...</div>,
 });
 
 // [BARU 1] Label sumber data yang ditampilkan di header dashboard
@@ -229,7 +233,7 @@ export default function MonitoringPage() {
           {/* --- KOLOM KIRI: Info Cards --- */}
           <div className={styles.leftColumn}>
             
-            {/* Card Posisi Kapal */}
+            {/* Card Posisi Kapal - peta Esri + OpenStreetMap */}
             <div className={styles.infoCard}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardIcon}>
@@ -238,40 +242,32 @@ export default function MonitoringPage() {
                     <circle cx="12" cy="10" r="3" />
                   </svg>
                 </span>
-                <h3>Posisi Kapal Saat Ini</h3>
+                <h3>{currentTelemetry?.is_danger ? 'Lokasi Titik Bahaya' : 'Posisi Kapal Saat Ini'}</h3>
               </div>
               <div className={styles.cardContent}>
-                <div className={styles.positionRow}>
-                  <span className={styles.posLabel}>Latitude</span>
-                  <span className={styles.posValue}>
-                    {currentTelemetry ? currentTelemetry.latitude.toFixed(6) + '°' : '—'}
-                  </span>
+                <div style={{
+                  height: 260,
+                  borderRadius: 'var(--radius-md)',
+                  overflow: 'hidden',
+                  border: `1px solid ${currentTelemetry?.is_danger ? '#f44336' : 'var(--color-gray-700)'}`,
+                }}>
+                  <ShipLocationMap
+                    position={currentTelemetry
+                      ? { lat: currentTelemetry.latitude, lng: currentTelemetry.longitude }
+                      : null}
+                    isDanger={!!currentTelemetry?.is_danger}
+                    roll={currentTelemetry ? currentTelemetry.roll : 0}
+                    pitch={currentTelemetry ? currentTelemetry.pitch : 0}
+                    shipName={shipData?.name || 'Kapal'}
+                  />
                 </div>
                 <div className={styles.positionRow}>
-                  <span className={styles.posLabel}>Longitude</span>
-                  <span className={styles.posValue}>
-                    {currentTelemetry ? currentTelemetry.longitude.toFixed(6) + '°' : '—'}
+                  <span className={styles.posLabel}>Koordinat</span>
+                  <span className={styles.posValue} style={{ fontSize: '0.8rem' }}>
+                    {currentTelemetry
+                      ? `${currentTelemetry.latitude.toFixed(6)}°, ${currentTelemetry.longitude.toFixed(6)}°`
+                      : '—'}
                   </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Card Suhu */}
-            <div className={styles.infoCard}>
-              <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
-                  </svg>
-                </span>
-                <h3>Suhu Air Laut</h3>
-              </div>
-              <div className={styles.cardContent}>
-                <div className={styles.tempDisplay}>
-                  <span className={styles.tempValue}>
-                    {currentTelemetry ? currentTelemetry.temperature.toFixed(1) : '—'}
-                  </span>
-                  <span className={styles.tempUnit}>°C</span>
                 </div>
               </div>
             </div>
@@ -319,51 +315,6 @@ export default function MonitoringPage() {
                     {currentTelemetry ? currentTelemetry.pitch.toFixed(1) + '°' : '—'}
                   </span>
                 </div>
-              </div>
-            </div>
-
-            {/* Card Status Kapal */}
-            <div className={styles.infoCard}>
-              <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.5 0 2.5 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
-                    <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76" />
-                    <path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6" />
-                  </svg>
-                </span>
-                <h3>Status Kapal</h3>
-              </div>
-              <div className={styles.cardContent}>
-                <div className={styles.statusRow}>
-                  <span className={styles.statusLabel}>Status</span>
-                  <span className={`${styles.statusValue} ${
-                    currentTelemetry?.is_moving ? styles.statusMoving : styles.statusStopped
-                  }`}>
-                    <span className={styles.statusDot}></span>
-                    {currentTelemetry?.is_moving ? 'Berlayar' : 'Berhenti'}
-                  </span>
-                </div>
-                <div className={styles.statusRow}>
-                  <span className={styles.statusLabel}>Kecepatan</span>
-                  <span className={styles.statusValue}>
-                    {currentTelemetry ? `${currentTelemetry.speed.toFixed(1)} knot` : '—'}
-                  </span>
-                </div>
-                <div className={styles.statusRow}>
-                  <span className={styles.statusLabel}>Update Terakhir</span>
-                  <span className={styles.statusValue} style={{ fontSize: '0.8rem' }}>
-                    {currentTelemetry
-                      ? new Date(currentTelemetry.timestamp).toLocaleTimeString('id-ID')
-                      : '—'}
-                  </span>
-                </div>
-                {/* Info kapal berhenti */}
-                {currentTelemetry && !currentTelemetry.is_moving && (
-                  <div className={styles.stoppedInfo}>
-                    Kapal sedang berlabuh atau berhenti. Pastikan kapal dalam kondisi aman.
-                  </div>
-                )}
               </div>
             </div>
           </div>
